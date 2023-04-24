@@ -33,60 +33,74 @@
     <div class="cards d-flex flex-column py-5">
         <div class="cardsInner">
 
-            <div class="cardsTop container row">
-                <div class="card col" style="width: 18rem;">
-                    <img src="https://picsum.photos/400/300" class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <h5 class="card-title">Card title</h5>
-                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                        <a href="#" class="btn btn-primary">Go somewhere</a>
+            <div class="container ">
+                <div class="row">
+                    <div class="card col" style="width: 18rem;">
+                        <img src="https://picsum.photos/400/300" class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <h5 class="card-title">Card title</h5>
+                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                            <router-link to="/product">
+                                <a href="#" class="btn btn-primary">前往產品詳細</a>
+                            </router-link>
+                        </div>
+                    </div>
+            
+                    <div class="card col" style="width: 18rem;">
+                        <img src="https://picsum.photos/400/300" class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <h5 class="card-title">Card title</h5>
+                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                            <router-link to="/product">
+                                <a href="#" class="btn btn-primary">前往產品詳細</a>
+                            </router-link>
+                        </div>
+                    </div>
+            
+                    <div class="card col" style="width: 18rem;">
+                        <img src="https://picsum.photos/400/300" class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <h5 class="card-title">Card title</h5>
+                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                            <router-link to="/product">
+                                <a href="#" class="btn btn-primary">前往產品詳細</a>
+                            </router-link>
+                        </div>
                     </div>
                 </div>
-        
-                <div class="card col" style="width: 18rem;">
-                    <img src="https://picsum.photos/400/300" class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <h5 class="card-title">Card title</h5>
-                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                        <a href="#" class="btn btn-primary">Go somewhere</a>
+
+                <div class="row">
+                    <div class="card col" style="width: 18rem;">
+                        <img src="https://picsum.photos/400/300" class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <h5 class="card-title">Card title</h5>
+                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                            <router-link to="/product">
+                                <a href="#" class="btn btn-primary">前往產品詳細</a>
+                            </router-link>
+                        </div>
                     </div>
-                </div>
-        
-                <div class="card col" style="width: 18rem;">
-                    <img src="https://picsum.photos/400/300" class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <h5 class="card-title">Card title</h5>
-                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                        <a href="#" class="btn btn-primary">Go somewhere</a>
+            
+                    <div class="card col" style="width: 18rem;">
+                        <img src="https://picsum.photos/400/300" class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <h5 class="card-title">Card title</h5>
+                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                            <router-link to="/product">
+                                <a href="#" class="btn btn-primary">前往產品詳細</a>
+                            </router-link>
+                        </div>
                     </div>
-                </div>
-            </div>
-    
-            <div class="cardsBottom container row">
-                <div class="card col" style="width: 18rem;">
-                    <img src="https://picsum.photos/400/300" class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <h5 class="card-title">Card title</h5>
-                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                        <a href="#" class="btn btn-primary">Go somewhere</a>
-                    </div>
-                </div>
-        
-                <div class="card col" style="width: 18rem;">
-                    <img src="https://picsum.photos/400/300" class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <h5 class="card-title">Card title</h5>
-                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                        <a href="#" class="btn btn-primary">Go somewhere</a>
-                    </div>
-                </div>
-        
-                <div class="card col" style="width: 18rem;">
-                    <img src="https://picsum.photos/400/300" class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <h5 class="card-title">Card title</h5>
-                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                        <a href="#" class="btn btn-primary">Go somewhere</a>
+            
+                    <div class="card col" style="width: 18rem;">
+                        <img src="https://picsum.photos/400/300" class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <h5 class="card-title">Card title</h5>
+                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                            <router-link to="/product">
+                                <a href="#" class="btn btn-primary">前往產品詳細</a>
+                            </router-link>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -106,7 +120,14 @@
   import { ElButton } from 'element-plus'
   export default {
     components: { ElButton },
+    methods: {
+    getPosts() {
+      fetch('https://jsonplaceholder.typicode.com/posts/1')
+    }
   }
+}
+
+  
 </script>
 
 <style scoped>
