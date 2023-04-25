@@ -30,100 +30,57 @@
         </div>
     </div>
 
-    <div class="cards d-flex flex-column py-5">
-        <div class="cardsInner">
+    <div class="container cards grid py-5">
+        <div class="w-full">
 
-            <div class="container ">
-                <div class="row">
-                    <div class="card col" style="width: 18rem;">
-                        <img src="https://picsum.photos/400/300" class="card-img-top" alt="...">
-                        <div class="card-body">
-                            <h5 class="card-title">Card title</h5>
-                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                            <router-link to="/product">
-                                <a href="#" class="btn btn-primary">前往產品詳細</a>
-                            </router-link>
-                        </div>
+            <div class="row justify-content-center">
+                <div class="card col-12 col-md-3 col-lg-2 m-1" v-for="(p, key) in posts" :key="p.id" style="width: 18rem;">
+        
+                    <img src="https://picsum.photos/400/300" class="card-img-top" alt="...">
+        
+                    <div class="card-body " >
+                        <h5 class="card-title"> {{ p.id }} - {{p.title}}</h5>
+                        <p class="card-text">p.body</p>
+                        <router-link :to="{path: '/product', query: {id:`${p.id}` }}">
+                            <a href="#" class="btn btn-primary">前往產品詳細</a>
+                        </router-link>
                     </div>
-            
-                    <div class="card col" style="width: 18rem;">
-                        <img src="https://picsum.photos/400/300" class="card-img-top" alt="...">
-                        <div class="card-body">
-                            <h5 class="card-title">Card title</h5>
-                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                            <router-link to="/product">
-                                <a href="#" class="btn btn-primary">前往產品詳細</a>
-                            </router-link>
-                        </div>
-                    </div>
-            
-                    <div class="card col" style="width: 18rem;">
-                        <img src="https://picsum.photos/400/300" class="card-img-top" alt="...">
-                        <div class="card-body">
-                            <h5 class="card-title">Card title</h5>
-                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                            <router-link to="/product">
-                                <a href="#" class="btn btn-primary">前往產品詳細</a>
-                            </router-link>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="card col" style="width: 18rem;">
-                        <img src="https://picsum.photos/400/300" class="card-img-top" alt="...">
-                        <div class="card-body">
-                            <h5 class="card-title">Card title</h5>
-                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                            <router-link to="/product">
-                                <a href="#" class="btn btn-primary">前往產品詳細</a>
-                            </router-link>
-                        </div>
-                    </div>
-            
-                    <div class="card col" style="width: 18rem;">
-                        <img src="https://picsum.photos/400/300" class="card-img-top" alt="...">
-                        <div class="card-body">
-                            <h5 class="card-title">Card title</h5>
-                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                            <router-link to="/product">
-                                <a href="#" class="btn btn-primary">前往產品詳細</a>
-                            </router-link>
-                        </div>
-                    </div>
-            
-                    <div class="card col" style="width: 18rem;">
-                        <img src="https://picsum.photos/400/300" class="card-img-top" alt="...">
-                        <div class="card-body">
-                            <h5 class="card-title">Card title</h5>
-                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                            <router-link to="/product">
-                                <a href="#" class="btn btn-primary">前往產品詳細</a>
-                            </router-link>
-                        </div>
-                    </div>
-                </div>
+        
+                </div>  
             </div>
 
         </div>
 
-        <el-pagination class="justify-content-center py-5" background layout="prev, pager, next" :total="1000" />
+        
+            
     </div>
 
-
-
+    <el-pagination class="justify-content-center py-5" background layout="prev, pager, next" :total="1000" />
 
 
 </template>
 
 <script>
-  import { ElButton } from 'element-plus'
-  export default {
-    components: { ElButton },
+import { ElButton } from 'element-plus'
+  
+export default {
+data(){
+    return {
+        posts: []
+    }
+  },
+    components: {
+        ElButton
+    },
     methods: {
     getPosts() {
-      fetch('https://jsonplaceholder.typicode.com/posts/1')
-    }
+        fetch('https://jsonplaceholder.typicode.com/posts')
+            .then(response => response.json())
+            .then(data => this.posts = data)
+        },
+    },
+  mounted() {
+    this.getPosts()
   }
 }
 
@@ -131,12 +88,12 @@
 </script>
 
 <style scoped>
-.cards {
+/* .cards {
     display: flex;
     flex-wrap: wrap;
 }
 .cardsInner {
     margin-left: auto; 
     margin-right: auto; 
-}
+} */
 </style>

@@ -1,6 +1,4 @@
 <script setup>
-import HelloWorld from './components/HelloWorld.vue'
-import Home from './views/Home.vue'
 import Nav from './views/Nav.vue'
 
 
@@ -8,7 +6,6 @@ import Nav from './views/Nav.vue'
 
 <template>
     <Nav/>
-    <!-- <Home /> -->
     <router-view></router-view>
     
 </template>

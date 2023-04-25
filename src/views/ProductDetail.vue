@@ -10,7 +10,7 @@
                     <img src="https://picsum.photos/800/600" class="card-img-top w-full" alt="...">
                 </div>
                 <div class="card-body">
-                    <h5 class="card-title">Card title</h5>
+                    <h5 class="card-title"> title {{ this.id }}</h5>
                     <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
                 </div>
             </div>
@@ -29,7 +29,23 @@
 </template>
 
 <script>
-
+export default {
+    data() { 
+        id:""
+        return {
+    
+        }
+    },
+    methods: {
+        getUrlId() {
+            console.log(this.$route.query.id)
+            this.id = this.$route.query.id
+        }
+    },
+    created() {
+    this.getUrlId()
+  }
+}
 </script>
 
 <style scoped>
