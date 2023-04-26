@@ -35,12 +35,17 @@
 
             <div class="row justify-content-center">
                 <div class="card col-12 col-md-3 col-lg-2 m-1" v-for="(p, key) in posts" :key="p.id" style="width: 18rem;">
-        
-                    <img src="https://picsum.photos/400/300" class="card-img-top" alt="...">
+                    <div class="w-full">
+                        <router-link :to="{path: '/product', query: {id:`${p.id}` }}">
+                            <img  :src="p.mainProductImgDisplayUrl" class="card-img-top" alt="...">
+                        </router-link>
+                    </div>
         
                     <div class="card-body " >
-                        <h5 class="card-title"> {{ p.id }} - {{p.title}}</h5>
-                        <p class="card-text">p.body</p>
+                        <h5 class="card-title"> {{ key + 1 }} - {{p.productName}}</h5>
+                        <p class="text-primary text-opacity-25 fs-6">id:{{ p.id }}</p>
+                        <p class="card-text">NT. {{ p.price }}</p>
+                        <p class="card-note">{{ p.note }}</p>
                         <router-link :to="{path: '/product', query: {id:`${p.id}` }}">
                             <a href="#" class="btn btn-primary">前往產品詳細</a>
                         </router-link>
@@ -73,10 +78,24 @@ data(){
         ElButton
     },
     methods: {
-    getPosts() {
-        fetch('https://jsonplaceholder.typicode.com/posts')
+        getPosts() { 
+        
+            fetch("https://tom-store-api.onrender.com/tom-store-api/product/pagination", {
+                method: "POST",
+                headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    "pageNum": 1,
+                    "pageSize": 10
+                }),
+            })
             .then(response => response.json())
-            .then(data => this.posts = data)
+            .then(data => {
+                // console.log(data.data)
+                this.posts = data.data.productPageInfo.list
+            })
         },
     },
   mounted() {
