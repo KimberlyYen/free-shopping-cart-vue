@@ -21,7 +21,9 @@
                 </div>
                 <div>
                     <input type="number" class="m-2" @keyup.enter="sum" @click="sum($event)"> {{ p.remainingAmountUnit }}
-                    <a href="#" class="btn btn-primary">加入購物車</a>
+                        <router-link to="/success">
+                            <a href="#" class="btn btn-primary">加入購物車</a>
+                        </router-link>
                 </div>
             </div>
     
@@ -53,9 +55,9 @@ export default {
             // console.log(productId)
             fetch(`https://tom-store-api.onrender.com/tom-store-api/product/${productId}`)
             .then(response => response.json())
-                .then(data => { 
-                    // console.log(data.data.productDtoList, 'api productDtoList')
-                    this.productDetail = data.data.productDtoList
+            .then(data => { 
+                // console.log(data.data.productDtoList, 'api productDtoList')
+                this.productDetail = data.data.productDtoList
                 }
             )
         },

@@ -1,7 +1,3 @@
-<script setup>
-
-</script>
-
 <template>
 
     <nav class="navbar navbar-light bg-light r ">
@@ -20,20 +16,41 @@
           </div>
 
           <form class="d-flex flex-row align-items-center mt-2">
-            <input class="form-control w-100" type="search" placeholder="商品名" aria-label="Search">
-            <button class="btn btn-outline-success w-50 mx-2" type="submit">搜索</button>
+            <input class="form-control w-100" type="search" placeholder="商品名" aria-label="Search" v-model="searchVal">
+            <button class="btn btn-outline-success w-50 mx-2" type="submit" @click.prevent="search">搜索</button>
             <router-link  class=" w-75" to="/shoppingCart">
               <button class="btn btn-info " type="submit">我的購物車</button>
             </router-link>
           </form>
-            
-
   
         </div>
     </div>
     </nav>
 
 </template>
+
+<script >
+
+export default {
+  data() {
+    
+    return {
+      // searchVal:'',
+      posts:[]
+      }
+    }, 
+    methods: {
+        search() { 
+          // 拿到值
+            let searchValue = this.searchVal
+            console.log(searchValue,'Nav')
+        // console.log(typeof searchValue)
+          // this.$emit('update',searchValue)
+        }
+    },
+}
+
+</script>
 
 <style scoped>
 .logo {

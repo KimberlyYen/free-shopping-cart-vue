@@ -35,6 +35,9 @@
 
             <div class="row justify-content-center">
                 <div class="card col-12 col-md-3 col-lg-2 m-1" v-for="(p, key) in posts" :key="p.id" style="width: 18rem;">
+                    <div>
+                        熱門商品    
+                    </div>
                     <div class="w-full">
                         <router-link :to="{path: '/product', query: {id:`${p.id}` }}">
                             <img  :src="p.mainProductImgDisplayUrl" class="card-img-top" alt="...">
@@ -67,7 +70,7 @@
 
 <script>
 import { ElButton } from 'element-plus'
-  
+
 export default {
 data(){
     return {
@@ -78,8 +81,7 @@ data(){
         ElButton
     },
     methods: {
-        getPosts() { 
-        
+        getPosts() {         
             fetch("https://tom-store-api.onrender.com/tom-store-api/product/pagination", {
                 method: "POST",
                 headers: {
@@ -88,7 +90,8 @@ data(){
                 },
                 body: JSON.stringify({
                     "pageNum": 1,
-                    "pageSize": 10
+                    "pageSize": 10,
+                    
                 }),
             })
             .then(response => response.json())
@@ -97,9 +100,11 @@ data(){
                 this.posts = data.data.productPageInfo.list
             })
         },
+
+        
     },
   mounted() {
-    this.getPosts()
+      this.getPosts()
   }
 }
 
