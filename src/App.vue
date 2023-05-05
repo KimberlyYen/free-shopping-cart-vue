@@ -1,12 +1,11 @@
-<template>
-    <Nav />
-    <router-view></router-view>
-    
-</template>
-
 <script setup>
 import Nav from './views/Nav.vue'
 
+function updateParams(msg) {
+    this.selectArr.push(msg)
+    console.log(msg)
+}
+        
 // export default {
 //     data() {
 //         return {
@@ -22,6 +21,14 @@ import Nav from './views/Nav.vue'
 // }
 
 </script>
+
+<template>
+    <Nav />
+    <router-view></router-view>
+    
+</template>
+
+
 
 
 <style scoped>
