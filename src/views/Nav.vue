@@ -56,7 +56,7 @@ export default {
   }, 
   methods: {
     returnValue() { 
-  const {location, updateLocation} = inject('location')
+  // const {location, updateLocation} = inject('location')
 
       // console.log('search')
       // this.old = this.text
@@ -78,11 +78,11 @@ export default {
       console.log('getSearchVal')
       // 取得 provide 的值
       const data = inject("data")
-      console.log(data.id)
+      // console.log(data.id)
 
       // console.log(this.old ,'還沒給')
       // 把值給到全域變數 watch
-      data.id = this.old
+      // data.id = this.old
    
 
       // console.log(this.old, '給與global')
@@ -101,7 +101,7 @@ export default {
   },
   mounted() {
     this.getSearchVal()
-    this.created()
+    // this.created()
   }
 }
 

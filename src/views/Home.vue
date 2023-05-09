@@ -35,7 +35,8 @@
 
 
             <div class="row justify-content-center">
-                <div class="card col-12 col-md-3 col-lg-2 m-1" v-for="(p, key) in posts" :key="p.id" style="width: 18rem;">
+                <div class="card col-12 col-md-3 col-lg-2 m-1" v-for="(p, key) in posts" :key="p.id" style="width: 18rem;"
+                @click="selectedProduct(p)">
                     <div>
                         熱門商品    
                     </div>
@@ -105,8 +106,11 @@ data(){
             })
         },
         setup(){
-        const data = inject("data")
-        console.log(data.id, 'home')
+            // const data = inject("data")
+            // console.log(data.id, 'home')
+        },
+        selectedProduct(product) {
+            console.log(product)
         }
     },
   mounted() {
