@@ -33,6 +33,7 @@
     <div class="container cards grid py-5">
         <div class="w-full">
 
+
             <div class="row justify-content-center">
                 <div class="card col-12 col-md-3 col-lg-2 m-1" v-for="(p, key) in posts" :key="p.id" style="width: 18rem;">
                     <div>
@@ -70,11 +71,14 @@
 
 <script>
 import { ElButton } from 'element-plus'
+import { inject } from "vue";
 
 export default {
+
+
 data(){
     return {
-        posts: []
+        posts: [],
     }
   },
     components: {
@@ -91,7 +95,7 @@ data(){
                 body: JSON.stringify({
                     "pageNum": 1,
                     "pageSize": 10,
-                    
+
                 }),
             })
             .then(response => response.json())
@@ -100,11 +104,14 @@ data(){
                 this.posts = data.data.productPageInfo.list
             })
         },
-
-        
+        setup(){
+        const data = inject("data")
+        console.log(data.id, 'home')
+        }
     },
   mounted() {
       this.getPosts()
+      this.setup()
   }
 }
 
