@@ -17,9 +17,11 @@
 
           <form class="d-flex flex-row align-items-center mt-2">
 
-            <input class="form-control w-100" type="text" aria-label="Search" v-model="text">
+            <input class="form-control w-100" type="text" aria-label="Search" 
+            v-model="inputFromChild" 
+            >
 
-            <el-select v-model="value" class="m-2" placeholder="Select" size="large">
+            <el-select v-model="value" class="m-2 w-100" placeholder="商品類" size="large" @click="getProductCategory">
               <el-option
                 v-for="item in options"
                 :key="item.value"
@@ -28,7 +30,11 @@
               />
             </el-select>
 
-            <button class="btn btn-outline-success w-50 mx-2" type="submit" @click.prevent="returnValue">搜索</button>
+            <button class="btn btn-outline-success w-50 mx-2" type="submit" 
+            @click.prevent="sendToParent"
+            >
+            搜索
+          </button>
             <router-link  class=" w-75" to="/shoppingCart">
               <button class="btn btn-info " type="updateLocation">我的購物車</button>
             </router-link>
@@ -41,66 +47,49 @@
 </template>
 
 <script >
-import { inject } from "vue";
 
 
 export default {
   data() {
-    
     return {
-      old:'',
-      text:'',
-      message:'',
-      posts:[],
+      options:[],
       }
   }, 
   methods: {
-    returnValue() { 
-  // const {location, updateLocation} = inject('location')
+    getProductCategory() {
+      // let productCategoryId = 'ALL'
 
-      // console.log('search')
-      // this.old = this.text
+      fetch("https://tom-store-api.onrender.com/tom-store-api/productCategory/ALL", {
+          method: "GET",
+      })
+      .then(response => response.json())
+      .then(data => {
+        // console.log(data.data)
 
-      // console.log(this.old)
-      // console.log(this.text)
-
-      // return this.old
-          // 拿到值
-            // let searchValue = this.searchVal
-            // console.log(searchValue,'Nav')
-        // console.log(typeof searchValue)
-          // this.$emit('update',searchValue)
-    },
-    getSearchVal() {
-      // console.log('setup')
-      // console.log(this.text, 'setup')
-
-      console.log('getSearchVal')
-      // 取得 provide 的值
-      const data = inject("data")
-      // console.log(data.id)
-
-      // console.log(this.old ,'還沒給')
-      // 把值給到全域變數 watch
-      // data.id = this.old
-   
-
-      // console.log(this.old, '給與global')
-      // console.log(data.id)
+        let list = data.data.productCategoryDtoList
       
-      // data.id = this.searchVal
+        list.forEach((item, i) => { 
+          let obj = {}
+          obj.label = item.note
+          obj.key = item.id
+          obj.value = i
 
-      // console.log(this.searchVal)
-        // return data.id
+          this.options.push(obj)            
+        })
+
+      })
     },
+    sendToParent() {
+      // NAV 拿到值
+      // 點擊搜尋按鈕傳值
+      this.$emit("value-update", this.inputFromChild)
+    }
   },
   watch: {  
-    // 'data.id'(newValue){ 
-    //   newValue = this.text
-    // }
+
   },
   mounted() {
-    this.getSearchVal()
+    this.getProductCategory()
     // this.created()
   }
 }

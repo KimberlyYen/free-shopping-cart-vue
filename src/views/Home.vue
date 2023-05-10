@@ -1,5 +1,6 @@
 <template>
 
+    <Nav @value-update="getValFromChild"/>
 
     <div class="carousel d-flex justify-content-center bg-black">
         <div id="carouselExampleIndicators" class="carousel slide " data-bs-ride="carousel">
@@ -72,21 +73,22 @@
 
 <script>
 import { ElButton } from 'element-plus'
-import { inject } from "vue";
+import Nav from '../views/Nav.vue'
 
 export default {
-
-
 data(){
-    return {
+        return {
+        inputValFromChild: "",
         posts: [],
     }
   },
     components: {
-        ElButton
+        ElButton,
+        Nav,
     },
     methods: {
-        getPosts() {         
+        getPosts() {     
+            let fuzzy = this.inputValFromChild
             fetch("https://tom-store-api.onrender.com/tom-store-api/product/pagination", {
                 method: "POST",
                 headers: {
@@ -96,7 +98,7 @@ data(){
                 body: JSON.stringify({
                     "pageNum": 1,
                     "pageSize": 10,
-
+                    "fuzzyProductName": fuzzy,
                 }),
             })
             .then(response => response.json())
@@ -105,17 +107,47 @@ data(){
                 this.posts = data.data.productPageInfo.list
             })
         },
-        setup(){
-            // const data = inject("data")
-            // console.log(data.id, 'home')
+        getProductCategory() {
+        fetch("https://tom-store-api.onrender.com/tom-store-api/productCategory/ALL", {
+            method: "GET",
+        })
+        .then(response => response.json())
+        .then(data => {
+            // console.log(data.data)
+
+            let list = data.data.productCategoryDtoList
+        
+            list.forEach((item, i) => { 
+            let obj = {}
+            obj.label = item.note
+            obj.key = item.id
+            obj.value = i
+
+            this.options.push(obj)            
+            })
+
+        })
         },
         selectedProduct(product) {
             console.log(product)
+        },
+        getValFromChild(val) {
+            this.inputValFromChild = val;
+            console.log(this.inputValFromChild)
+            this.getPosts()
         }
+        // searchProduct(text) {
+        //     // 把拿到的值
+        //     // 給到 API
+        //     // 重新用這筆資料，查詢
+        //     console.log(text)
+        //     this.fuzzy = text
+        //     this.getPosts()
+        //     // getPosts(this.text)
+        // },
     },
   mounted() {
       this.getPosts()
-      this.setup()
   }
 }
 

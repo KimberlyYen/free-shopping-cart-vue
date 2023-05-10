@@ -1,6 +1,6 @@
-<script setup>
-import { provide, ref } from "vue";
-import Nav from './views/Nav.vue'
+<script>
+// import { provide, ref } from "vue";
+// import Nav from './views/Nav.vue'
 
 // const location = ref('North')
 
@@ -31,7 +31,7 @@ import Nav from './views/Nav.vue'
 </script>
 
 <template>
-    <Nav />
+    <!-- <Nav /> -->
     <router-view></router-view>
     
 </template>
