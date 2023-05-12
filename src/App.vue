@@ -1,40 +1,38 @@
+<template>
+    <Nav @value-update="getValFromChild"/>
+    <router-view :searchVal="searchVal"></router-view>
+    
+</template>
+
 <script>
-// import { provide, ref } from "vue";
-// import Nav from './views/Nav.vue'
+import Nav from '../src/views/Nav.vue'
 
-// const location = ref('North')
+export default {
+    components: {
+        Nav,
+    },
+    data() { 
+        return {
+            inputValFromChild: '',
+            searchVal:'',
+        }
+    },
+    methods: {
+        getValFromChild(val) {
+            this.inputValFromChild = val;
+            console.log(this.inputValFromChild, 'APP')
+            this.searchVal = val
+        },
 
-// function updateLocation() { 
-//     updateLocation.value = 'south pole'
-// }
-
-// provide('location', {
-//     location,
-//     updateLocation
-// })
-// const data = { id: 123 }
-// provide('data', data)
-
-// console.log(data)
-
-
-
-// function updateParams(msg) {
-//     this.selectArr.push(msg)
-//     console.log(msg)
-// }
-        
-
+    },
+    
+}
 
 
 
 </script>
 
-<template>
-    <!-- <Nav /> -->
-    <router-view></router-view>
-    
-</template>
+
 
 
 

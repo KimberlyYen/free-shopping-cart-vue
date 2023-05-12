@@ -18,7 +18,7 @@
           <form class="d-flex flex-row align-items-center mt-2">
 
             <input class="form-control w-100" type="text" aria-label="Search" 
-            v-model="inputFromChild" 
+            v-model="inputFromChild"
             >
 
             <el-select v-model="value" class="m-2 w-100" placeholder="商品類" size="large" @click="getProductCategory">

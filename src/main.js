@@ -5,6 +5,7 @@ import "bootstrap/dist/css/bootstrap.min.css"
 import "bootstrap"
 import { createRouter, createWebHistory } from 'vue-router'
 import Home from './views/Home.vue'
+// import App from './App.vue'
 import ShoppingCart from './views/ShoppingCart.vue'
 import ProductDetail from './views/ProductDetail.vue'
 import Success from './views/Success.vue'

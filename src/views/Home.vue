@@ -1,6 +1,6 @@
 <template>
 
-    <Nav @value-update="getValFromChild"/>
+    <!-- <Nav @value-update="getValFromChild"/> -->
 
     <div class="carousel d-flex justify-content-center bg-black">
         <div id="carouselExampleIndicators" class="carousel slide " data-bs-ride="carousel">
@@ -30,7 +30,6 @@
             </button>
         </div>
     </div>
-
     <div class="container cards grid py-5">
         <div class="w-full">
 
@@ -76,15 +75,21 @@ import { ElButton } from 'element-plus'
 import Nav from '../views/Nav.vue'
 
 export default {
+components: {
+    ElButton,
+    Nav,
+},
+props:['inputValFromChild'],
 data(){
         return {
         inputValFromChild: "",
         posts: [],
     }
-  },
-    components: {
-        ElButton,
-        Nav,
+    },
+    watch: {
+        inputValFromChild: function(val) { 
+            console.log(val)
+        }
     },
     methods: {
         getPosts() {     
@@ -105,6 +110,7 @@ data(){
             .then(data => {
                 // console.log(data.data)
                 this.posts = data.data.productPageInfo.list
+
             })
         },
         getProductCategory() {
@@ -146,21 +152,20 @@ data(){
         //     // getPosts(this.text)
         // },
     },
+  watch: {
+        searchVal: function (val) {
+        console.log(val)
+        
+    }
+  },  
   mounted() {
       this.getPosts()
-  }
+    },
+
 }
 
   
 </script>
 
 <style scoped>
-/* .cards {
-    display: flex;
-    flex-wrap: wrap;
-}
-.cardsInner {
-    margin-left: auto; 
-    margin-right: auto; 
-} */
 </style>
