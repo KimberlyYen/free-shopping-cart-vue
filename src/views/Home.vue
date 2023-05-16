@@ -1,7 +1,5 @@
 <template>
 
-    <!-- <Nav @value-update="getValFromChild"/> -->
-
     <div class="carousel d-flex justify-content-center bg-black">
         <div id="carouselExampleIndicators" class="carousel slide " data-bs-ride="carousel">
             <div class="carousel-indicators">
@@ -33,7 +31,7 @@
     <div class="container cards grid py-5">
         <div class="w-full">
 
-
+            <span> {{inputName}} </span>
             <div class="row justify-content-center">
                 <div class="card col-12 col-md-3 col-lg-2 m-1" v-for="(p, key) in posts" :key="p.id" style="width: 18rem;"
                 @click="selectedProduct(p)">
@@ -72,28 +70,27 @@
 
 <script>
 import { ElButton } from 'element-plus'
-import Nav from '../views/Nav.vue'
 
 export default {
+props: {
+    inputName: String,
+},    
 components: {
     ElButton,
-    Nav,
 },
-props:['inputValFromChild'],
 data(){
         return {
         inputValFromChild: "",
         posts: [],
+        getValue:'',
     }
     },
-    watch: {
-        inputValFromChild: function(val) { 
-            console.log(val)
-        }
+    mounted() {
+      this.getPosts()
     },
     methods: {
         getPosts() {     
-            let fuzzy = this.inputValFromChild
+            let fuzzy = this.inputName
             fetch("https://tom-store-api.onrender.com/tom-store-api/product/pagination", {
                 method: "POST",
                 headers: {
@@ -108,60 +105,32 @@ data(){
             })
             .then(response => response.json())
             .then(data => {
-                // console.log(data.data)
+                // console.log(data)
                 this.posts = data.data.productPageInfo.list
-
             })
         },
         getProductCategory() {
-        fetch("https://tom-store-api.onrender.com/tom-store-api/productCategory/ALL", {
-            method: "GET",
-        })
-        .then(response => response.json())
-        .then(data => {
-            // console.log(data.data)
+                fetch("https://tom-store-api.onrender.com/tom-store-api/productCategory/ALL", {
+                    method: "GET",
+                })
+                .then(response => response.json())
+                .then(data => {
+                    // console.log(data.data)
 
-            let list = data.data.productCategoryDtoList
-        
-            list.forEach((item, i) => { 
-            let obj = {}
-            obj.label = item.note
-            obj.key = item.id
-            obj.value = i
+                    let list = data.data.productCategoryDtoList
+                
+                    list.forEach((item, i) => { 
+                    let obj = {}
+                    obj.label = item.note
+                    obj.key = item.id
+                    obj.value = i
 
-            this.options.push(obj)            
-            })
+                    this.options.push(obj)            
+                    })
 
-        })
+                })
         },
-        selectedProduct(product) {
-            console.log(product)
-        },
-        getValFromChild(val) {
-            this.inputValFromChild = val;
-            console.log(this.inputValFromChild)
-            this.getPosts()
-        }
-        // searchProduct(text) {
-        //     // 把拿到的值
-        //     // 給到 API
-        //     // 重新用這筆資料，查詢
-        //     console.log(text)
-        //     this.fuzzy = text
-        //     this.getPosts()
-        //     // getPosts(this.text)
-        // },
     },
-  watch: {
-        searchVal: function (val) {
-        console.log(val)
-        
-    }
-  },  
-  mounted() {
-      this.getPosts()
-    },
-
 }
 
   

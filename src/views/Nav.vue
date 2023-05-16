@@ -30,11 +30,14 @@
               />
             </el-select>
 
-            <button class="btn btn-outline-success w-50 mx-2" type="submit" 
+          <button 
+            class="btn btn-outline-success w-50 mx-2" 
+            type="submit" 
             @click.prevent="sendToParent"
             >
             搜索
           </button>
+
             <router-link  class=" w-75" to="/shoppingCart">
               <button class="btn btn-info " type="updateLocation">我的購物車</button>
             </router-link>
@@ -45,9 +48,7 @@
     </nav>
 
 </template>
-
 <script >
-
 
 export default {
   data() {
@@ -83,7 +84,8 @@ export default {
       // NAV 拿到值
       // 點擊搜尋按鈕傳值
       this.$emit("value-update", this.inputFromChild)
-    }
+    },
+
   },
   watch: {  
 
