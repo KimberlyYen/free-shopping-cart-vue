@@ -31,13 +31,13 @@
     <div class="container cards grid py-5">
         <div class="w-full">
 
-            <span> {{inputName}} </span>
+            <div>
+                搜尋內容：
+                <span v-for=" item in inputName"> {{item.search}} </span>
+            </div>
             <div class="row justify-content-center">
                 <div class="card col-12 col-md-3 col-lg-2 m-1" v-for="(p, key) in posts" :key="p.id" style="width: 18rem;"
                 @click="selectedProduct(p)">
-                    <div>
-                        熱門商品    
-                    </div>
                     <div class="w-full">
                         <router-link :to="{path: '/product', query: {id:`${p.id}` }}">
                             <img  :src="p.mainProductImgDisplayUrl" class="card-img-top" alt="...">
@@ -73,24 +73,40 @@ import { ElButton } from 'element-plus'
 
 export default {
 props: {
-    inputName: String,
+    inputName: Array,
 },    
 components: {
     ElButton,
 },
 data(){
         return {
-        inputValFromChild: "",
         posts: [],
-        getValue:'',
     }
     },
     mounted() {
       this.getPosts()
     },
+    watch: {
+    // whenever question changes, this function will run
+    inputName(newQuestion, oldQuestion) {
+      if (newQuestion !== '') {
+          this.getPosts()
+      }
+    }
+   },
     methods: {
-        getPosts() {     
-            let fuzzy = this.inputName
+        getPosts() {    
+
+            let array = this.inputName
+            
+            let fuzzy = ''
+            let category = ''
+            array.map((item) => { 
+                console.log(item)
+                fuzzy = item.search
+                category = item.elSelected
+            })
+
             fetch("https://tom-store-api.onrender.com/tom-store-api/product/pagination", {
                 method: "POST",
                 headers: {
@@ -100,6 +116,7 @@ data(){
                 body: JSON.stringify({
                     "pageNum": 1,
                     "pageSize": 10,
+                    "productCategoryId":category,
                     "fuzzyProductName": fuzzy,
                 }),
             })
@@ -108,27 +125,6 @@ data(){
                 // console.log(data)
                 this.posts = data.data.productPageInfo.list
             })
-        },
-        getProductCategory() {
-                fetch("https://tom-store-api.onrender.com/tom-store-api/productCategory/ALL", {
-                    method: "GET",
-                })
-                .then(response => response.json())
-                .then(data => {
-                    // console.log(data.data)
-
-                    let list = data.data.productCategoryDtoList
-                
-                    list.forEach((item, i) => { 
-                    let obj = {}
-                    obj.label = item.note
-                    obj.key = item.id
-                    obj.value = i
-
-                    this.options.push(obj)            
-                    })
-
-                })
         },
     },
 }

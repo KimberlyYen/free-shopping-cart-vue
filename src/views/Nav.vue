@@ -20,8 +20,10 @@
             <input class="form-control w-100" type="text" aria-label="Search" 
             v-model="inputFromChild"
             >
-
-            <el-select v-model="value" class="m-2 w-100" placeholder="商品類" size="large" @click="getProductCategory">
+           
+            <el-select v-model="value" class="m-2 w-100" placeholder="商品類別" size="large"
+            >
+              <el-option value="請選擇"/>
               <el-option
                 v-for="item in options"
                 :key="item.value"
@@ -30,13 +32,13 @@
               />
             </el-select>
 
-          <button 
-            class="btn btn-outline-success w-50 mx-2" 
-            type="submit" 
-            @click.prevent="sendToParent"
-            >
-            搜索
-          </button>
+            <button 
+              class="btn btn-outline-success w-50 mx-2" 
+              type="submit" 
+              @click.prevent="sendToParent"
+              >
+              搜索
+            </button>
 
             <router-link  class=" w-75" to="/shoppingCart">
               <button class="btn btn-info " type="updateLocation">我的購物車</button>
@@ -53,29 +55,33 @@
 export default {
   data() {
     return {
-      options:[],
+      options: [],
+      selected: '',
+      inputFromChild: '',
+      value:'',
       }
   }, 
+  mounted() { 
+    this.getProductCategory()
+  },  
   methods: {
     getProductCategory() {
-      // let productCategoryId = 'ALL'
 
       fetch("https://tom-store-api.onrender.com/tom-store-api/productCategory/ALL", {
           method: "GET",
       })
       .then(response => response.json())
       .then(data => {
-        // console.log(data.data)
 
         let list = data.data.productCategoryDtoList
       
-        list.forEach((item, i) => { 
+        list.forEach((item) => { 
           let obj = {}
           obj.label = item.note
-          obj.key = item.id
-          obj.value = i
+          obj.key = item.note
+          obj.value = item.id
 
-          this.options.push(obj)            
+          this.options.push(obj)          
         })
 
       })
@@ -83,17 +89,19 @@ export default {
     sendToParent() {
       // NAV 拿到值
       // 點擊搜尋按鈕傳值
-      this.$emit("value-update", this.inputFromChild)
+      let Array = []
+      let searchVal = this.inputFromChild
+      let elSelected = this.value
+      // console.log(searchVal)
+      // console.log(elSelected)
+
+      Array.push({ search: searchVal }, { elSelected:elSelected })
+      console.log(Array)
+      this.$emit('value-update', Array)
+
     },
 
   },
-  watch: {  
-
-  },
-  mounted() {
-    this.getProductCategory()
-    // this.created()
-  }
 }
 
 </script>

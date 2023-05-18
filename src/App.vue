@@ -13,28 +13,18 @@ export default {
     },
     data() { 
         return {
-            // inputValFromChild: '',
-            inputContent: ""
+            inputContent: [],
         }
     },
     methods: {
         getValFromChild(val) {
             // this.inputContent = val
             this.inputContent = val;
-            val = this.inputContent
-            console.log(val, 'APP VAL')
-            // this.inputValFromChild = val;
+            // val = this.inputContent
+            console.log(val, 'APP')
 
-            // this.$emit("value-updateFromApp", this.inputValFromChild)
-
-            // console.log(this.inputValFromChild, 'APP')
-
+            
         },
-        // send(val) { 
-        //     console.log(val, 'emit')
-        //     this.inputContent = val
-
-        // }
     },
     
 }
