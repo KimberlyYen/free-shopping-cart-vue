@@ -95,7 +95,7 @@ export default {
       // console.log(searchVal)
       // console.log(elSelected)
 
-      Array.push({ search: searchVal }, { elSelected:elSelected })
+      Array.push({ searchKey: searchVal }, { elSelected:elSelected })
       console.log(Array)
       this.$emit('value-update', Array)
 

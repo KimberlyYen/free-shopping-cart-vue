@@ -97,15 +97,12 @@ data(){
     methods: {
         getPosts() {    
 
-            let array = this.inputName
             
-            let fuzzy = ''
-            let category = ''
-            array.map((item) => { 
-                console.log(item)
-                fuzzy = item.search
-                category = item.elSelected
-            })
+            let array = this.inputName
+
+                let fuzzy = array[0].searchKey
+                let category = array[1].elSelected
+
 
             fetch("https://tom-store-api.onrender.com/tom-store-api/product/pagination", {
                 method: "POST",
@@ -116,8 +113,8 @@ data(){
                 body: JSON.stringify({
                     "pageNum": 1,
                     "pageSize": 10,
-                    "productCategoryId":category,
                     "fuzzyProductName": fuzzy,
+                    "productCategoryId":category,
                 }),
             })
             .then(response => response.json())
