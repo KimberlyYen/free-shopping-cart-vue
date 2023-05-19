@@ -1,7 +1,6 @@
 <template>
-    <Nav @value-update="getValFromChild" />
+    <Nav @value-update="getValFromChild" v-if="this.show"/>
     <router-view :inputName="inputContent"></router-view>
-    
 </template>
 
 <script>
@@ -14,18 +13,23 @@ export default {
     data() { 
         return {
             inputContent: [],
+            show: true,
         }
     },
     methods: {
         getValFromChild(val) {
-            // this.inputContent = val
             this.inputContent = val;
-            // val = this.inputContent
-            console.log(val, 'APP')
-
-            
+            // console.log(val, 'APP')
         },
+
     },
+    watch: {
+        '$route'(to) {
+            if (to.path === '/login') {
+                this.show = false; // 当URL为"/login"时将参数更改为false
+            }
+        }
+ },
     
 }
 </script>

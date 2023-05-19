@@ -62,6 +62,7 @@
                 </tr>
             </tbody>
         </table>
+        {{ data }}
 
     </div>
 
@@ -72,7 +73,12 @@
 </template>
 
 <script>
-
+export default {
+  props: ['data'],
+  mounted() {
+    console.log(this.data);  // 检查是否能正确访问到传递的数据
+  }
+};
 </script>
 
 <style scoped>

@@ -11,7 +11,9 @@
 
         <div>
           <div>
-            <button class="btn btn-success rounded-5" type="submit">登入</button>
+            <router-link to="/login">
+              <button class="btn btn-success rounded-5" type="submit">登入</button>
+            </router-link>
             <button class="btn btn-success rounded-5" type="submit">註冊</button>
           </div>
 
@@ -92,8 +94,6 @@ export default {
       let Array = []
       let searchVal = this.inputFromChild
       let elSelected = this.value
-      // console.log(searchVal)
-      // console.log(elSelected)
 
       Array.push({ searchKey: searchVal }, { elSelected:elSelected })
       console.log(Array)

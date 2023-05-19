@@ -33,11 +33,11 @@
 
             <div>
                 搜尋內容：
-                <span v-for=" item in inputName"> {{item.search}} </span>
+                <span> {{fuzzy}} </span>
             </div>
             <div class="row justify-content-center">
                 <div class="card col-12 col-md-3 col-lg-2 m-1" v-for="(p, key) in posts" :key="p.id" style="width: 18rem;"
-                @click="selectedProduct(p)">
+                >
                     <div class="w-full">
                         <router-link :to="{path: '/product', query: {id:`${p.id}` }}">
                             <img  :src="p.mainProductImgDisplayUrl" class="card-img-top" alt="...">
@@ -46,7 +46,18 @@
         
                     <div class="card-body " >
                         <h5 class="card-title"> {{ key + 1 }} - {{p.productName}}</h5>
-                        <p class="text-primary text-opacity-25 fs-6">id:{{ p.id }}</p>
+                        <p class="text-primary text-opacity-25 fs-6">id:
+                            <br>
+                            <span>
+                                {{ p.id }}
+                            </span>
+                        </p>
+                        <p class="text-primary text-opacity-25 fs-6">productCategoryId:
+                            <br>
+                            <span>
+                                {{ p.productCategoryId }}
+                            </span>
+                        </p>
                         <p class="card-text">NT. {{ p.price }}</p>
                         <p class="card-note">{{ p.note }}</p>
                         <router-link :to="{path: '/product', query: {id:`${p.id}` }}">
@@ -80,7 +91,9 @@ components: {
 },
 data(){
         return {
-        posts: [],
+            posts: [],
+            fuzzy: '',
+            category:'',
     }
     },
     mounted() {
@@ -90,19 +103,20 @@ data(){
     // whenever question changes, this function will run
     inputName(newQuestion, oldQuestion) {
       if (newQuestion !== '') {
+          this.getSearchVal()
           this.getPosts()
       }
     }
    },
     methods: {
-        getPosts() {    
-
-            
+        getSearchVal() {   
             let array = this.inputName
-
-                let fuzzy = array[0].searchKey
-                let category = array[1].elSelected
-
+            console.log(array, 'HOME')
+            
+            this.fuzzy = array[0].searchKey
+            this.category = array[1].elSelected
+        },
+        getPosts() {                
 
             fetch("https://tom-store-api.onrender.com/tom-store-api/product/pagination", {
                 method: "POST",
@@ -113,8 +127,8 @@ data(){
                 body: JSON.stringify({
                     "pageNum": 1,
                     "pageSize": 10,
-                    "fuzzyProductName": fuzzy,
-                    "productCategoryId":category,
+                    "fuzzyProductName": this.fuzzy,
+                    "productCategoryId":this.category,
                 }),
             })
             .then(response => response.json())
