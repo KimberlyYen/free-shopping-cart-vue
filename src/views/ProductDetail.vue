@@ -1,15 +1,16 @@
 <template>
 
 
-    <div class="cards d-flex flex-column py-5">
-
-        <div class="cardsInner w-50">
-
-
-            <div class="card" v-for="p in productDetail">
-                <div class="product-img">
-                    <img :src="p.mainProductImgDisplayUrl" class="card-img-top w-full w-50" alt="...">
+    <div class="container card mt-5">
+        <div class="row p-5" v-for="p in productDetail">
+            
+            <div class="col ">
+                <div >
+                    <img :src="p.mainProductImgDisplayUrl" alt="productIMG" class="picture">
                 </div>
+            </div>
+
+            <div class="col">
                 <div class="card-body">
                     <p class="text-primary text-opacity-25 fs-6">id: {{ p.id }}</p>
                     <h5 class="card-title"> Title {{ p.productName }}</h5>
@@ -20,29 +21,36 @@
                     <div>加總 {{ total }} </div>
                 </div>
                 <div>
-                    <input type="number" class="m-2" @keyup.enter="sum" @click="sum($event)"> {{ p.remainingAmountUnit }}
-                    <a href="#" class="btn btn-primary" @click="addProduct(p)">加入購物車</a>
+                    <input type="number" min="0" class="m-2" @keyup.enter="sum" @click="sum($event)" v-model.number="howMany"> {{ p.remainingAmountUnit }}
+                    <br>
+
+                        <router-link to="/shoppingCart">
+                            <a href="#" class="btn btn-primary" @click="addToCart(p.id, this.howMany, this.total)">加入購物車</a>
+                        </router-link>
+
                 </div>
             </div>
-    
 
         </div>
-
     </div>
-
 
 
 </template>
 
 <script>
+import { mapState, mapActions } from 'pinia'
+import cartStore from '../stores/cartStore'
+
+
+
 export default {
     data() { 
         id: ""
         return {
-            total:0,
             productDetail: [],
             hasToken: false,
-            orderProduct:[],
+            howMany:0,
+            total: 0,
         }
     },
     created() {
@@ -51,7 +59,13 @@ export default {
     mounted() {
         this.checkToken()
     },
+    computed: {
+        // 1. Store
+        // 2. 要帶入的 state, Getter
+        ...mapState(cartStore, ['cart', 'totalProduct']),
+    },
     methods: {
+        ...mapActions(cartStore,['addToCart']),  
         getUrlId() {
             let productId = this.$route.query.id
 
@@ -65,8 +79,6 @@ export default {
             )
         },
         sum(event) {
-            // console.log(event.currentTarget.value , 'value')
-            // console.log(this.productDetail[0].price, 'price')
             this.total = event.currentTarget.value * this.productDetail[0].price
         },
         checkToken() {
@@ -81,33 +93,26 @@ export default {
                 this.$router.push('/login');
             }
         },
-        addProduct(product) {
-            // console.log(product)
-            this.orderProduct.push({ productName: product }, { totalPrice: this.total })
-            // this.orderProduct.push(this.total)
-            console.log(this.orderProduct)
-
-            // 导航到下一页并传递数据
-            this.$router.push({ name: 'ShoppingCart', params: { data: this.orderProduct } });
-            // this.$router.push('/shoppingCart');
-            // this.$emit('order-product', this.orderProduct)
-        }
     },
 
 }
 </script>
 
 <style scoped>
-.cards {
+/* .cards {
     display: flex;
     flex-wrap: wrap;
-}
-.cardsInner {
+} */
+/* .cardsInner {
     margin-left: auto; 
     margin-right: auto; 
-}
-.product-img {
-    display: block; /* ★★★★★ */
-    max-width: 100%;
+} */
+.picture {
+    max-width: 50%;
+    /* height: 50%; */
+    /* object-fit: cover; */
+    /* display: block;
+    max-width: 100%; */
+    /* width: 100%; */
 }
 </style>

@@ -28,15 +28,19 @@
             </button>
         </div>
     </div>
+
+
+
     <div class="container cards grid py-5">
         <div class="w-full">
+
 
             <div>
                 搜尋內容：
                 <span> {{fuzzy}} </span>
             </div>
             <div class="row justify-content-center">
-                <div class="card col-12 col-md-3 col-lg-2 m-1" v-for="(p, key) in posts" :key="p.id" style="width: 18rem;"
+                <div class="card col-12 col-md-3 col-lg-2 m-1" v-for=" (p, key) in sortProduct" :key="key" style="width: 18rem;"
                 >
                     <div class="w-full">
                         <router-link :to="{path: '/product', query: {id:`${p.id}` }}">
@@ -44,7 +48,7 @@
                         </router-link>
                     </div>
         
-                    <div class="card-body " >
+                    <div class="card-body d-flex flex-column" >
                         <h5 class="card-title"> {{ key + 1 }} - {{p.productName}}</h5>
                         <p class="text-primary text-opacity-25 fs-6">id:
                             <br>
@@ -60,8 +64,8 @@
                         </p>
                         <p class="card-text">NT. {{ p.price }}</p>
                         <p class="card-note">{{ p.note }}</p>
-                        <router-link :to="{path: '/product', query: {id:`${p.id}` }}">
-                            <a href="#" class="btn btn-primary">前往產品詳細</a>
+                        <router-link class="mt-auto" :to="{path: '/product', query: {id:`${p.id}` }}">
+                            <a href="#" class="btn btn-outline-primary w-100 ">前往產品詳細</a>
                         </router-link>
                     </div>
         
@@ -73,7 +77,6 @@
         
             
     </div>
-
     <el-pagination class="justify-content-center py-5" background layout="prev, pager, next" :total="1000" />
 
 
@@ -81,6 +84,10 @@
 
 <script>
 import { ElButton } from 'element-plus'
+import { mapState, mapActions } from 'pinia'
+import productStore from '../stores/productStore'
+
+
 
 export default {
 props: {
@@ -91,24 +98,31 @@ components: {
 },
 data(){
         return {
-            posts: [],
             fuzzy: '',
-            category:'',
+            category: '',
     }
     },
+    created() {
+    } ,
     mounted() {
-      this.getPosts()
+        this.getProducts()
     },
     watch: {
     // whenever question changes, this function will run
     inputName(newQuestion, oldQuestion) {
       if (newQuestion !== '') {
           this.getSearchVal()
-          this.getPosts()
+          this.getProducts()
       }
     }
-   },
+    },
+    computed: {
+        // 1. Store
+        // 2. 要帶入的 state, Getter
+        ...mapState(productStore, ['sortProduct']),
+    },
     methods: {
+        ...mapActions(productStore, ['getProducts', 'getSearchVal']),      
         getSearchVal() {   
             let array = this.inputName
             console.log(array, 'HOME')
@@ -116,27 +130,26 @@ data(){
             this.fuzzy = array[0].searchKey
             this.category = array[1].elSelected
         },
-        getPosts() {                
-
-            fetch("https://tom-store-api.onrender.com/tom-store-api/product/pagination", {
-                method: "POST",
-                headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    "pageNum": 1,
-                    "pageSize": 10,
-                    "fuzzyProductName": this.fuzzy,
-                    "productCategoryId":this.category,
-                }),
-            })
-            .then(response => response.json())
-            .then(data => {
-                // console.log(data)
-                this.posts = data.data.productPageInfo.list
-            })
-        },
+        // getPosts() {                
+        //     fetch("https://tom-store-api.onrender.com/tom-store-api/product/pagination", {
+        //         method: "POST",
+        //         headers: {
+        //         'Accept': 'application/json',
+        //         'Content-Type': 'application/json'
+        //         },
+        //         body: JSON.stringify({
+        //             "pageNum": 1,
+        //             "pageSize": 10,
+        //             "fuzzyProductName": this.fuzzy,
+        //             "productCategoryId":this.category,
+        //         }),
+        //     })
+        //     .then(response => response.json())
+        //     .then(data => {
+        //         // console.log(data)
+        //         this.posts = data.data.productPageInfo.list
+        //     })
+        // },
     },
 }
 
@@ -144,4 +157,7 @@ data(){
 </script>
 
 <style scoped>
+.card-img-top {
+    object-fit: cover;
+}
 </style>

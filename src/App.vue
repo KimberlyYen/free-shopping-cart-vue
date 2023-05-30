@@ -27,6 +27,8 @@ export default {
         '$route'(to) {
             if (to.path === '/login') {
                 this.show = false; // 当URL为"/login"时将参数更改为false
+            } else {
+                this.show = true; // 当URL为"/login"时将参数更改为false
             }
         }
  },

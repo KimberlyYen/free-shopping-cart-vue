@@ -8,6 +8,7 @@
             <h2>通知</h2>
             <p>恭喜您購買成功，具體明細已寄送至信箱，請前往查看，祝您發大財</p>
             <h3>SUCCESS</h3>
+            {{ name }}
 
         </div>
 
@@ -18,7 +19,10 @@
 </template>
 
 <script>
+
+
 export default {
+
     data() { 
         return {
    

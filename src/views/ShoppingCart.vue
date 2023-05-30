@@ -13,56 +13,39 @@
                 <th scope="col">產品名稱</th>
                 <th scope="col">數量</th>
                 <th scope="col">價格</th>
-                <th scope="col">優惠折抵</th>
-                <th scope="col">總計</th>
+                <th scope="col">小計</th>
+                <th scope="col">刪除</th>
                 </tr>
             </thead>
-            <tbody>
-                <tr>
-                <th scope="row">1</th>
-                    <td><input type="checkbox"></td>
+            <div v-if="!cartList.carts.length"> 購物車沒有任何品項 </div>
+            <tbody v-else  v-for="(item, i) in cartList.carts" :key="item.id">
+                <tr >
+                    <th scope="row" > {{ i + 1 }}</th>
+                    <td> <input type="checkbox"></td>
                     <td>
-                        <img src="https://picsum.photos/100/100/?random=1" alt="">
+                        <img 
+
+                        :src="item.product.mainProductImgDisplayUrl" alt="productIMG">
                     </td>
-                    <td>Name-Otto</td>
-                    <td>
-                        <input type="number">
+                    <td > {{ item.product.productName }}</td>
+                    <td >
+                        <select name="" id="" class="col-8">
+                            <option value="">{{ item.howMany }}</option>
+                        </select>
                     </td>
-                    <td>NT.100</td>
-                    <td>Otto</td>
-                    <td>@mdo</td>
-                </tr>
-                <tr>
-                <th scope="row">2</th>
-                    <td><input type="checkbox"></td>
-                    <td>
-                        <img src="https://picsum.photos/100/100/?random=2" alt="">
-                    </td>
-                    <td>Name-Thornton</td>
-                    <td>
-                        <input type="number">
-                    </td>
-                    <td>NT.100</td>
-                    <td>Thornton</td>
-                    <td>@fat</td>
-                </tr>
-                <tr>
-                <th scope="row">3</th>
-                    <td><input type="checkbox"></td>
-                    <td>
-                        <img src="https://picsum.photos/100/100/?random=3" alt="">
-                    </td>
-                    <td>Name-Thornton</td>
-                    <td>
-                        <input type="number">
-                    </td>
-                    <td>NT.100</td>
-                    <td>Thornton</td>
-                    <td>@fat</td>
+                    <td> NT.{{ item.product.price }}</td>
+                    <td> NT.{{ item.total }}</td>
+                    <td 
+                    class="delete"
+                    @click="removeCartItem(item.id)"> X </td>
                 </tr>
             </tbody>
+            <tfoot>
+                總金額 $ {{ cartList.sum  }}
+            </tfoot>
         </table>
-        {{ data }}
+       
+       
 
     </div>
 
@@ -73,14 +56,34 @@
 </template>
 
 <script>
+import { mapActions, mapState } from 'pinia'
+import cartStore from '../stores/cartStore.js'
+
+
 export default {
-  props: ['data'],
-  mounted() {
-    console.log(this.data);  // 检查是否能正确访问到传递的数据
-  }
+    computed: {
+        // 1. Store
+        // 2. 要帶入的 state, Getter
+        ...mapState(cartStore, ['cartList']),
+    },
+    methods: {
+        ...mapActions(cartStore,['removeCartItem'])
+    }
 };
+
 </script>
 
 <style scoped>
-
+table{
+    border-collapse: collapse;
+    border-spacing: 0;
+    table-layout: fixed;
+}
+img{
+    width: 100px;
+    height: 100px;
+}
+.delete{
+    cursor: pointer;
+}
 </style>

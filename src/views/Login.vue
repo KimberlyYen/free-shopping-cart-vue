@@ -20,10 +20,11 @@
   </div>
 
 
-
 </template>
 
 <script>
+
+
 export default {
   data() {
     return {
@@ -33,7 +34,7 @@ export default {
       email: '',
       showLoginForm: true
     };
-    },
+  },
   methods: {
     createAccount() {
       // 获取用户名、密码和邮箱
