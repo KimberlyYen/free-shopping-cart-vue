@@ -9,13 +9,13 @@
             </div>
             <div class="carousel-inner">
                 <div class="carousel-item active">
-                <img src="https://picsum.photos/1200/300/?random=1" class="" alt="...">
+                <img src="https://picsum.photos/1920/400/?random=1" class="" alt="...">
                 </div>
                 <div class="carousel-item">
-                <img src="https://picsum.photos/1200/300/?random=2" class="" alt="...">
+                <img src="https://picsum.photos/1920/400/?random=2" class="" alt="...">
                 </div>
                 <div class="carousel-item">
-                <img src="https://picsum.photos/1200/300/?random=3" class="" alt="...">
+                <img src="https://picsum.photos/1920/400/?random=3" class="" alt="...">
                 </div>
             </div>
             <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
@@ -40,7 +40,7 @@
                 <span> {{fuzzy}} </span>
             </div>
             <div class="row justify-content-center">
-                <div class="card col-12 col-md-3 col-lg-2 m-1" v-for=" (p, key) in sortProduct" :key="key" style="width: 18rem;"
+                <div class="card col-12 col-md-3 col-lg-2 m-1 p-2" v-for=" (p, key) in sortProduct" :key="key" style="width: 18rem;"
                 >
                     <div class="w-full">
                         <router-link :to="{path: '/product', query: {id:`${p.id}` }}">
@@ -157,7 +157,11 @@ data(){
 </script>
 
 <style scoped>
-.card-img-top {
-    object-fit: cover;
-}
+/* .carousel {
+   width:100vw;
+ } */
+.carousel img {
+    width: 100vw;
+    height: 400px;
+ }
 </style>

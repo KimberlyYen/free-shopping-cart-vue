@@ -12,13 +12,24 @@ export default defineStore('cart', {
   },
   actions: {
     addToCart(productId, howMany, total) {
+      // 取得已經有加入購物車的項目
+      // 進行判斷，如果購物車有該項目則 +1，如果沒有則是新增一個購物車項目
 
-      this.cart.push({
-        id: new Date().getTime(),
-        productId,
-        howMany,
-        total,
-      }) 
+      const currentCart = this.cart.find((item) => item.productId === productId)
+      
+      if (currentCart) {
+        currentCart.howMany += howMany
+        currentCart.total += total
+
+      } else {
+        this.cart.push({
+          id: new Date().getTime(),
+          productId,
+          howMany,
+          total,
+        }) 
+      }
+
 
     },
     removeCartItem(id) {
@@ -32,23 +43,18 @@ export default defineStore('cart', {
   getters: {
     cartList: ({ cart }) => {
       const { posts } = productStore()
-      // console.log(posts, 'cartStore/getter/posts')
-      // console.log(cart, 'cart')
 
       const carts = cart.map((item) => {
 
-        // console.log(item, 'item')
         const product = posts.find((product) => product.id === item.productId)
 
         return {
             ...item,
           product,
-          // subtotal: item.howMany * item.total,
         }
       })
 
-      console.log(carts, 'carts')
-      // console.log(cart,'cart')
+      // console.log(carts, 'carts')
 
       const initialValue = 0;
       const sum = carts.reduce(
