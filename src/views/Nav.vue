@@ -25,7 +25,7 @@
            
             <el-select v-model="value" class="m-2 w-100" placeholder="商品類別" size="large"
             >
-              <el-option value="請選擇"/>
+              <el-option value="請選擇" disabled/>
               <el-option
                 v-for="item in options"
                 :key="item.value"
@@ -37,7 +37,7 @@
             <button 
               class="btn btn-outline-success w-50 mx-2" 
               type="submit" 
-              @click.prevent="sendToParent"
+              @click.prevent="sendToParent(this.inputFromChild, this.value)"
               >
               搜索
             </button>
@@ -53,11 +53,13 @@
 
 </template>
 <script >
+import { mapState, mapActions } from 'pinia'
+import productStore from '../stores/productStore'
+
 
 export default {
   data() {
     return {
-      options: [],
       selected: '',
       inputFromChild: '',
       value:'',
@@ -66,41 +68,11 @@ export default {
   mounted() { 
     this.getProductCategory()
   },  
+  computed: {
+        ...mapState(productStore, ['options']),
+  },
   methods: {
-    getProductCategory() {
-
-      fetch("https://tom-store-api.onrender.com/tom-store-api/productCategory/ALL", {
-          method: "GET",
-      })
-      .then(response => response.json())
-      .then(data => {
-
-        let list = data.data.productCategoryDtoList
-      
-        list.forEach((item) => { 
-          let obj = {}
-          obj.label = item.note
-          obj.key = item.note
-          obj.value = item.id
-
-          this.options.push(obj)          
-        })
-
-      })
-    },
-    sendToParent() {
-      // NAV 拿到值
-      // 點擊搜尋按鈕傳值
-      let Array = []
-      let searchVal = this.inputFromChild
-      let elSelected = this.value
-
-      Array.push({ searchKey: searchVal }, { elSelected:elSelected })
-      console.log(Array)
-      this.$emit('value-update', Array)
-
-    },
-
+    ...mapActions(productStore, ['sendToParent', 'getProductCategory']),      
   },
 }
 

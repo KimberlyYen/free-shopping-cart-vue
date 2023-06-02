@@ -37,7 +37,7 @@
 
             <div>
                 搜尋內容：
-                <span> {{fuzzy}} </span>
+                <span> {{this.fuzzy}} </span>
             </div>
             <div class="row justify-content-center">
                 <div class="card col-12 col-md-3 col-lg-2 m-1 p-2" v-for=" (p, key) in sortProduct" :key="key" style="width: 18rem;"
@@ -98,8 +98,8 @@ components: {
 },
 data(){
         return {
-            fuzzy: '',
-            category: '',
+            // fuzzy: '',
+            // category: '',
     }
     },
     created() {
@@ -119,7 +119,7 @@ data(){
     computed: {
         // 1. Store
         // 2. 要帶入的 state, Getter
-        ...mapState(productStore, ['sortProduct']),
+        ...mapState(productStore, ['sortProduct', 'fuzzy', 'category']),
     },
     methods: {
         ...mapActions(productStore, ['getProducts', 'getSearchVal']),      
