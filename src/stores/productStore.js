@@ -19,7 +19,6 @@ export default defineStore('productStore', {
         // this
         getProducts(searchVal, elSelected) {
 
-   
         fetch("https://tom-store-api.onrender.com/tom-store-api/product/pagination", {
                 method: "POST",
                 headers: {
@@ -36,8 +35,7 @@ export default defineStore('productStore', {
             .then(response => response.json())
             .then(data => {
                 // console.log(data)
-                // status.isLoading = true
-                // console.log('message', 'store')  
+                
                 this.posts = data.data.productPageInfo.list
             })
 

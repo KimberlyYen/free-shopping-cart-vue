@@ -71,7 +71,8 @@ export default {
         .then(data => {
             console.log(data)
             let token = data.data.access_token
-            localStorage.setItem('token', token);
+          localStorage.setItem('shopCartToken', token);
+            alert('Success!')
             // this.$router.push('/');
             this.$router.go(-1);
             
