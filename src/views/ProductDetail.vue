@@ -26,7 +26,7 @@
 
                         <router-link to="/shoppingCart">
                             <a href="#" class="btn btn-primary" 
-                            @click="addToCart(productDetail.id, this.howMany, this.total)">加入購物車</a>
+                            @click="addToCart(productDetail.id, this.howMany)">加入購物車</a>
                         </router-link>
 
                 </div>
@@ -66,7 +66,7 @@ export default {
         ...mapState(cartStore, ['cart', 'totalProduct']),
     },
     methods: {
-        ...mapActions(cartStore,['addToCart']),  
+        ...mapActions(cartStore,['addToCart', 'addToCartAPI']),  
         getUrlId() {
             let productId = this.$route.query.id
 

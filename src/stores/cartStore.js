@@ -1,5 +1,4 @@
 import { defineStore } from 'pinia'
-import productStore from './productStore.js';
 
 export default defineStore('cart', {
   // 在此可以使用箭頭函式，不過其它地方一樣不行
@@ -8,14 +7,16 @@ export default defineStore('cart', {
       // productDetail: [],
       cart: [],
       totalProduct: 0,
-      cartList:[],
+      cartList: [],
+      count: 100,
+      isLoading: false,
     };
   },
   actions: {
-    addToCart(productId, howMany, total) {
+    addToCart(productId, howMany) {
       // 取得已經有加入購物車的項目
       // 進行判斷，如果購物車有該項目則 +1，如果沒有則是新增一個購物車項目
-          console.log('addToCart',productId,howMany, total)
+          // console.log('addToCart',productId,howMany, total)
       
           const currentCart = this.cart.find((item) => item.productId === productId)
       
@@ -24,16 +25,15 @@ export default defineStore('cart', {
             currentCart.total += total
 
             this.addToCartAPI(productId, currentCart.howMany)
-
           } else {
             this.cart.push({
               id: new Date().getTime(),
               productId,
               howMany,
-              total,
+              // total,
             }) 
 
-            this.addToCartAPI(productId, howMany )
+            this.addToCartAPI(productId, howMany)
           }
           
  
@@ -54,13 +54,16 @@ export default defineStore('cart', {
             },
             body: JSON.stringify({
               "selectProductAmount": howMany,
-              "productId":productId,
+              "productId": productId,
+              
             }),
             })
             .then(response => response.json())
             .then(data => {
               console.log(data, 'data')
               // location.reload()
+              this.getCartItem()
+             
             })
     },
     removeCartItem(id, selectProductAmount) {
@@ -75,14 +78,11 @@ export default defineStore('cart', {
       // 確認是否刪除商品
          let deleteCheck 
          if (confirm("確定要刪除嗎") == true) {
-                // text = "You pressed OK!";
-           deleteCheck = 0
-            location.reload()
+          deleteCheck = 0
           } else {
-            // text = "You canceled!";
-           deleteCheck = selectProductAmount
+            deleteCheck = selectProductAmount
           }
-
+  
       // 確認刪除則，如果產品數量設成0，則將該產品會從該會員購物車移除  
           fetch("https://tom-store-api.onrender.com/tom-store-api/shoppingCart", {
             method: "PATCH",
@@ -104,14 +104,18 @@ export default defineStore('cart', {
             .then(response => response.json())
             .then(data => {
               // console.log(data, 'data')
-
-           
-            })
+              // this.isLoading = true;
+            }).finally(() => {
+              // this.isLoading = false; // 请求完成后，将isLoading设置为false，隐藏加载动画
+               location.reload()
+            });
 
     },
     getCartItem() {
 
       const tokenNow = localStorage.getItem("shopCartToken");
+
+        this.isLoading = true;
 
         fetch("https://tom-store-api.onrender.com/tom-store-api/shoppingCart", {
             method: "GET",
@@ -132,10 +136,28 @@ export default defineStore('cart', {
               this.cartList = data.data.shoppingCartDtoList
               // console.log(this.cartList, 'dataCartList')
               // location.reload()
-            })
+            }).finally(() => {
+              this.isLoading = false; // 请求完成后，将isLoading设置为false，隐藏加载动画
+            });
     }
   },
   getters: {
+    sumCount(state) {
+      
+      
+      const initialValue = 0;
+      const sum = state.cartList.reduce(
+        (accumulator, currentValue) =>
+          // console.log(accumulator.selectProductAmount * accumulator.productDto.price)
+          accumulator + (currentValue.selectProductAmount * currentValue.productDto.price)
+          ,
+          initialValue
+        );
+      
+      
+      
+      return sum
+    },
     // cartList: ({ cart }) => {
     //   const { posts } = productStore()
 

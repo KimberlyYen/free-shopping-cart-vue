@@ -4,7 +4,17 @@
         <h2>ShoppingCart</h2>
 
 
-        <table class="table">
+        <!-- <div v-if="isLoading" class="spinner-border" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div> -->
+
+        <div  v-if="isLoading" class="d-flex justify-content-center align-items-center">
+            <div class="spinner-border" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+
+        <table v-else class="table">
             <thead>
                 <tr>
                 <th scope="col">#</th>
@@ -19,7 +29,7 @@
             </thead>
             <!-- <div v-if="!cartList.carts.length"> 購物車沒有任何品項 </div> -->
             <!-- <tbody v-else  v-for="(item, i) in cartList.carts" :key="item.id"> -->
-        
+            
             <tbody v-for="(item, i) in cartList" :key="item.id">
                 <!-- {{ item }} -->
 
@@ -38,24 +48,18 @@
                         </select>
                     </td>
                     <td> NT.{{ item.productDto.price }}</td>
-                    <td> NT.{{ item.productDto.total }}</td>
+                    <td> NT.{{ item.productDto.price *  item.selectProductAmount }}</td>
                     <td 
                     class="delete text-danger"
                     @click="removeCartItem(item.productDto.id, item.selectProductAmount)"> X </td>
                 </tr>
             </tbody>
             <tfoot>
-                總金額 $ {{ cartList.sum  }}
+                總金額 $ {{ sumCount }}
             </tfoot>
         </table>
        
-       
-
     </div>
-
-
-
-
 
 </template>
 
@@ -64,20 +68,18 @@ import { mapActions, mapState } from 'pinia'
 import cartStore from '../stores/cartStore.js'
 
 
+
 export default {
+    created() {
+        this.getCartItem()
+    },
     computed: {
         // 1. Store
         // 2. 要帶入的 state, Getter
-        ...mapState(cartStore, ['cartList']),
-    },
-    created() {        
-        this.getCartItem()
-    },
-    mounted() {
-        this.addToCartAPI()
+        ...mapState(cartStore, ['cartList', 'count','sumCount','isLoading']),
     },
     methods: {
-        ...mapActions(cartStore,['removeCartItem', 'getCartItem', 'addToCartAPI'])
+        ...mapActions(cartStore,['removeCartItem', 'addToCartAPI','getCartItem'])
     }
 };
 
@@ -96,4 +98,5 @@ img{
 .delete{
     cursor: pointer;
 }
+
 </style>
