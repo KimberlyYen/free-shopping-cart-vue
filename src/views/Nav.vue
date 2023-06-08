@@ -10,11 +10,16 @@
       </div>
 
         <div>
-          <div>
-            <router-link to="/login">
-              <button class="btn btn-success rounded-5" type="submit">登入</button>
+          <div class="d-flex flex-row ">
+
+            <div class="col my-auto" v-if="displayName"> Hi ! 歡迎  <span class="text-primary">{{  displayName  }}</span>  </div>
+
+            <router-link to="/login"  class="btn btn-success rounded-5 col-2">
+              <div type="submit">登入</div>
             </router-link>
-            <button class="btn btn-success rounded-5" type="submit">註冊</button>
+
+            <div class="btn btn-dark rounded-5 mx-2 col-2" type="submit" @click="removeToken">登出</div>
+
           </div>
 
           <form class="d-flex flex-row align-items-center mt-2">
@@ -57,22 +62,50 @@ import { mapState, mapActions } from 'pinia'
 import productStore from '../stores/productStore'
 
 
+
 export default {
   data() {
     return {
       selected: '',
       inputFromChild: '',
-      value:'',
+      value: '',
+      displayName:''
       }
   }, 
+  created() {
+    this.getMember()  
+  },
   mounted() { 
     this.getProductCategory()
   },  
   computed: {
-        ...mapState(productStore, ['options']),
+    ...mapState(productStore, ['options']),
   },
   methods: {
-    ...mapActions(productStore, ['sendToParent', 'getProductCategory']),      
+    ...mapActions(productStore, ['sendToParent', 'getProductCategory']),    
+    removeToken() {
+      alert('您已成功登出')
+      localStorage.removeItem("shopCartToken");
+    },
+     getMember() {
+         
+      const tokenNow = localStorage.getItem("shopCartToken");
+
+        fetch("https://tom-store-api.onrender.com/tom-store-api/member", {
+            method: "GET",
+            headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'authorization': "Bearer" + " " + tokenNow 
+            },
+        })
+        .then(response => response.json())
+        .then(data => {
+          this.displayName = data.data.displayName
+        })
+
+    },
+
   },
 }
 

@@ -35,7 +35,7 @@
         <div class="w-full">
 
 
-            <div>
+            <div class="mb-4">
                 搜尋內容：
                 <span> {{this.fuzzy}} </span>
             </div>
@@ -98,8 +98,6 @@ components: {
 },
 data(){
         return {
-            // fuzzy: '',
-            // category: '',
     }
     },
     created() {

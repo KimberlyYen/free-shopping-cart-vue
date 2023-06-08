@@ -35,9 +35,7 @@ export default defineStore('cart', {
 
             this.addToCartAPI(productId, howMany)
           }
-          
- 
-
+        
 
     },
     addToCartAPI(productId, howMany) {

@@ -6,14 +6,18 @@
         <input type="text" v-model="name" placeholder="name" />
         <input type="password" v-model="password" placeholder="password" />
         <input type="text" v-model="email" placeholder="email address" />
+        <input type="date" v-model="birthday" placeholder="birthday YYYY-MM-DD" />
+        <input type="text" v-model="gender" placeholder="MALE=男 FEMALE=女 OTHER=其他" />
+        <input type="text" v-model="country" placeholder="country" />
+
         <button @click.prevent="createAccount">create</button>
         <p class="message">Already registered? <a href="#" @click.prevent="toggleForm">Sign In</a></p>
       </form>
 
       <form class="login-form" v-show="showLoginForm">
-        <input type="text" v-model="username" placeholder="username" />
+        <input type="text" v-model="email" placeholder="Email" />
         <input type="password" v-model="password" placeholder="password" />
-        <button @click.prevent="login">login</button>
+        <button @click.prevent="login(email, password)">login</button>
         <p class="message">Not registered? <a href="#" @click.prevent="toggleForm">Create an account</a></p>
       </form>
     </div>
@@ -23,70 +27,107 @@
 </template>
 
 <script>
+import { mapState, mapActions } from 'pinia'
+import memberStore from '../stores/memberStore'
 
 
 export default {
   data() {
     return {
-      name: '',
-      username: '',
-      password: '',
-      email: '',
-      showLoginForm: true
+      // name: '',
+      // username: '',
+      // password: '',
+      // email: '',
+      // birthday: '',
+      // gender: '',
+      // country: '',
+      showLoginForm: true,
     };
   },
+  computed: {
+  // 1. Store
+  // 2. 要帶入的 state, Getter
+  // ...mapState(memberStore, ['name', 'username', 'password','email','birthday','gender','country']),
+  },
   methods: {
-    createAccount() {
-      // 获取用户名、密码和邮箱
-      const name = this.name;
-      const password = this.password;
-      const email = this.email;
-      
-      // 在这里可以进行进一步的处理，例如创建账号
-      
-      // 清空表单
-      this.name = '';
-      this.password = '';
-          this.email = '';
-
-         
-    },login() {
-      // 获取用户名和密码
-      const username = this.username;
-      const password = this.password;
-      
-      // 在这里可以进行进一步的处理，例如登录验证
-        fetch("https://tom-store-api.onrender.com/tom-store-api/member/login", {
-            method: "POST",
-            headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                "email": username,
-                "password": password,
-            }),
-        })
-        .then(response => response.json())
-        .then(data => {
-            console.log(data)
-            let token = data.data.access_token
-          localStorage.setItem('shopCartToken', token);
-            alert('Success!')
-            // this.$router.push('/');
-            this.$router.go(-1);
-            
-            // this.posts = data.data.productPageInfo.list
-        })
-      
-      // 清空表单
-      this.username = '';
-      this.password = '';
-    },
+    ...mapActions(memberStore, ['login', 'createAccount']),   
     toggleForm() {
       // 切换登录和注册表单的显示
       this.showLoginForm = !this.showLoginForm;
-    }
+    }   
+    // createAccount() {
+    //   // 获取用户名、密码和邮箱
+    //   const name = this.name;
+    //   const password = this.password;
+    //   const email = this.email;
+    //   const birthday = this.birthday;
+    //   const gender = this.gender;
+    //   const country = this.country;
+
+      
+    //   // 在这里可以进行进一步的处理，例如创建账号
+    //   fetch("https://tom-store-api.onrender.com/tom-store-api/member/signUp", {
+    //         method: "POST",
+    //         headers: {
+    //         'Accept': 'application/json',
+    //         'Content-Type': 'application/json'
+    //         },
+    //     body: JSON.stringify({
+    //             "displayName":name,
+    //             "password": password,
+    //             "email": email,
+    //             "birthday": birthday,
+    //             "gender": gender,
+    //             "country": country,
+    //         }),
+    //     })
+    //     .then(response => response.json())
+    //     .then(data => {
+    //       console.log(data)
+    //         alert('Success!')
+    //         this.$router.go(-1);
+    //     })
+      
+    //   // 清空表单
+    //   this.name = '';
+    //   this.password = '';
+    //       this.email = '';
+
+         
+    // },
+    // login() {
+    //   // 获取用户名和密码
+    //   const email = this.email;
+    //   const password = this.password;
+      
+    //   // 在这里可以进行进一步的处理，例如登录验证
+    //     fetch("https://tom-store-api.onrender.com/tom-store-api/member/login", {
+    //         method: "POST",
+    //         headers: {
+    //         'Accept': 'application/json',
+    //         'Content-Type': 'application/json'
+    //         },
+    //         body: JSON.stringify({
+    //             "email": email,
+    //             "password": password,
+    //         }),
+    //     })
+    //     .then(response => response.json())
+    //     .then(data => {
+    //       console.log(data)
+
+    //       let token = data.data.access_token
+    //       this.token = token
+    //       localStorage.setItem('shopCartToken', token);
+    //       alert('Success!')
+    //       this.$router.go(-1);
+    //     })
+      
+    //   // 清空表单
+    //   this.username = '';
+    //   this.password = '';
+    // },
+
   }
 };
 </script>
