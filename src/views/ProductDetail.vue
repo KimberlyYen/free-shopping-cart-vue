@@ -74,10 +74,9 @@ export default {
             fetch(`https://tom-store-api.onrender.com/tom-store-api/product/${productId}`)
             .then(response => response.json())
             .then(data => { 
-                console.log(data.data.productAmountDto.productDto)
+                // console.log(data.data.productAmountDto.productDto)
                 
                 this.productDetail = data.data.productAmountDto.productDto
-                // this.productDetail = data.data.productDtoList
                 }
             )
         },

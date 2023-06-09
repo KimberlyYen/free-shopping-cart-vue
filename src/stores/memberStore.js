@@ -20,12 +20,9 @@ export default defineStore('memberStore', {
     actions: {
         // this
     login(email, password) {
-      // 获取用户名和密码
-      // const myEmail = this.email;
-      // const password = this.password;
-        
-        console.log(email)
-        console.log(password)
+      // 获取用户名和密码        
+        // console.log(email)
+        // console.log(password)
 
       
       // 在这里可以进行进一步的处理，例如登录验证
@@ -42,7 +39,7 @@ export default defineStore('memberStore', {
         })
         .then(response => response.json())
         .then(data => {
-        console.log(data)
+        // console.log(data)
 
         let token = data.data.access_token
         localStorage.setItem('shopCartToken', token);
@@ -50,7 +47,7 @@ export default defineStore('memberStore', {
       }).finally(() => {
         alert('Success!')
 
-        const tokenNow = localStorage.getItem("shopCartToken");
+        // const tokenNow = localStorage.getItem("shopCartToken");
         history.go(-1)
         });
       

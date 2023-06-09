@@ -16,25 +16,25 @@ export default defineStore('cart', {
     addToCart(productId, howMany) {
       // 取得已經有加入購物車的項目
       // 進行判斷，如果購物車有該項目則 +1，如果沒有則是新增一個購物車項目
-          // console.log('addToCart',productId,howMany, total)
       
-          const currentCart = this.cart.find((item) => item.productId === productId)
-      
-          if (currentCart) {
-            currentCart.howMany += howMany
-            currentCart.total += total
+       const currentCart = this.cartList.find((item) => item.productDto.id === productId)
 
-            this.addToCartAPI(productId, currentCart.howMany)
-          } else {
-            this.cart.push({
-              id: new Date().getTime(),
-              productId,
-              howMany,
-              // total,
-            }) 
+      if (currentCart) {
+        currentCart.selectProductAmount += howMany
+        // currentCart.total += total
 
-            this.addToCartAPI(productId, howMany)
-          }
+        this.addToCartAPI(productId, currentCart.selectProductAmount)
+            
+      } else {
+        this.cart.push({
+          id: new Date().getTime(),
+          productId,
+          howMany,
+          // total,
+        }) 
+
+        this.addToCartAPI(productId, howMany)
+      }
         
 
     },

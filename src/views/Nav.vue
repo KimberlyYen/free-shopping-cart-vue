@@ -73,10 +73,10 @@ export default {
       }
   }, 
   created() {
-    this.getMember()  
   },
   mounted() { 
     this.getProductCategory()
+    this.getMember()  
   },  
   computed: {
     ...mapState(productStore, ['options']),
@@ -86,23 +86,25 @@ export default {
     removeToken() {
       alert('您已成功登出')
       localStorage.removeItem("shopCartToken");
+      this.$router.push('/')
+      location.reload()
     },
      getMember() {
          
       const tokenNow = localStorage.getItem("shopCartToken");
 
-        fetch("https://tom-store-api.onrender.com/tom-store-api/member", {
-            method: "GET",
-            headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-            'authorization': "Bearer" + " " + tokenNow 
-            },
-        })
-        .then(response => response.json())
-        .then(data => {
-          this.displayName = data.data.displayName
-        })
+      fetch("https://tom-store-api.onrender.com/tom-store-api/member", {
+          method: "GET",
+          headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'authorization': "Bearer" + " " + tokenNow 
+          },
+      })
+      .then(response => response.json())
+      .then(data => {
+        this.displayName = data.data.displayName
+      })
 
     },
 
