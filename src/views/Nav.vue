@@ -76,7 +76,11 @@ export default {
   },
   mounted() { 
     this.getProductCategory()
-    this.getMember()  
+
+    const tokenNow = localStorage.getItem("shopCartToken");
+    if (tokenNow) {
+      this.getMember()  
+    }
   },  
   computed: {
     ...mapState(productStore, ['options']),

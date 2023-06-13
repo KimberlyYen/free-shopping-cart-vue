@@ -16,7 +16,7 @@ export default defineConfig({
       resolvers: [ElementPlusResolver()],
     }),
   ],
-build: {
-        sourcemap: true,
-    },
+  build: {
+          sourcemap: true,
+      },
 })

@@ -77,7 +77,10 @@
         
             
     </div>
-    <el-pagination class="justify-content-center py-5" background layout="prev, pager, next" :total="1000" />
+    <el-pagination class="justify-content-center py-5" background layout="prev, pager, next" :total="this.totalPage" 
+      v-model:current-page="this.currentPage"
+      @current-change="handleCurrentPage"
+    />
 
 
 </template>
@@ -97,7 +100,7 @@ components: {
     ElButton,
 },
 data(){
-        return {
+    return {
     }
     },
     created() {
@@ -117,10 +120,10 @@ data(){
     computed: {
         // 1. Store
         // 2. 要帶入的 state, Getter
-        ...mapState(productStore, ['sortProduct', 'fuzzy', 'category']),
+        ...mapState(productStore, ['sortProduct', 'fuzzy', 'category','currentPage', 'totalPage']),
     },
     methods: {
-        ...mapActions(productStore, ['getProducts', 'getSearchVal']),      
+        ...mapActions(productStore, ['getProducts', 'getSearchVal', 'handleCurrentPage']),      
         getSearchVal() {   
             let array = this.inputName
             console.log(array, 'HOME')
@@ -128,26 +131,6 @@ data(){
             this.fuzzy = array[0].searchKey
             this.category = array[1].elSelected
         },
-        // getPosts() {                
-        //     fetch("https://tom-store-api.onrender.com/tom-store-api/product/pagination", {
-        //         method: "POST",
-        //         headers: {
-        //         'Accept': 'application/json',
-        //         'Content-Type': 'application/json'
-        //         },
-        //         body: JSON.stringify({
-        //             "pageNum": 1,
-        //             "pageSize": 10,
-        //             "fuzzyProductName": this.fuzzy,
-        //             "productCategoryId":this.category,
-        //         }),
-        //     })
-        //     .then(response => response.json())
-        //     .then(data => {
-        //         // console.log(data)
-        //         this.posts = data.data.productPageInfo.list
-        //     })
-        // },
     },
 }
 

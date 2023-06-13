@@ -61,7 +61,12 @@
 
                 </tbody>
                 <tfoot>
-                    總金額 $ {{ sumCount }}
+                    <div class="mt-3">
+                        總金額 $ {{ sumCount }}
+                    </div>
+                    <div class="btn btn-success rounded-5 col-6 mt-3">
+                        結帳
+                    </div>
                 </tfoot>
         </table>
 

@@ -39,8 +39,6 @@ export default defineStore('memberStore', {
         })
         .then(response => response.json())
         .then(data => {
-        // console.log(data)
-
         let token = data.data.access_token
         localStorage.setItem('shopCartToken', token);
         
@@ -93,10 +91,7 @@ export default defineStore('memberStore', {
         this.password = '';
         this.email = '';
 
-         
         },
-       
- 
 
         
         

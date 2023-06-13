@@ -8,7 +8,9 @@ export default defineStore('productStore', {
             posts: [],
             options: [],
             fuzzy: '',
-            category:'',
+            category: '',
+            currentPage: 1,
+            totalPage:100,
         }
     )
     ,
@@ -26,7 +28,7 @@ export default defineStore('productStore', {
                 'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    "pageNum": 1,
+                    "pageNum": this.currentPage,
                     "pageSize": 10,
                     "fuzzyProductName": searchVal,
                     "productCategoryId":elSelected,
@@ -34,30 +36,22 @@ export default defineStore('productStore', {
             })
             .then(response => response.json())
             .then(data => {
-                // console.log(data)
+                // console.log(data.data.productPageInfo.total)
                 
                 this.posts = data.data.productPageInfo.list
+                this.totalPage = data.data.productPageInfo.total
             })
 
         },
+        handleCurrentPage(val) {
+            this.currentPage = val
+            this.getProducts()
+        },
         sendToParent(searchVal, elSelected) {
-
-
-            // console.log(searchVal, elSelected, 'store')
             this.fuzzy = searchVal
             this.category = elSelected
 
             this.getProducts(searchVal, elSelected)
-
-            // 我拿到了 類別的 id
-            // 要轉成 Label
-
-            // 將所有 類別 拿出來比對
-            // 如果 id 相同，回傳類別
-            // 用另一個變數記 Label
-            
-    
-
         },
         getProductCategory() {
 
