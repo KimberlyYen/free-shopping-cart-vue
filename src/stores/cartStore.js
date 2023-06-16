@@ -10,6 +10,7 @@ export default defineStore('cart', {
       cartList: [],
       count: 100,
       isLoading: false,
+      checkoutList:[],
     };
   },
   actions: {
@@ -137,22 +138,33 @@ export default defineStore('cart', {
             }).finally(() => {
               this.isLoading = false; // 请求完成后，将isLoading设置为false，隐藏加载动画
             });
+    },
+    getProductToCheckout(item) {
+        this.checkoutList = item
     }
   },
   getters: {
     sumCount(state) {
       
-      
       const initialValue = 0;
       const sum = state.cartList.reduce(
         (accumulator, currentValue) =>
-          // console.log(accumulator.selectProductAmount * accumulator.productDto.price)
           accumulator + (currentValue.selectProductAmount * currentValue.productDto.price)
           ,
           initialValue
         );
       
+      return sum
+    },
+    sumCountCheckout(state) {
       
+      const initialValue = 0;
+      const sum = state.checkoutList.reduce(
+        (accumulator, currentValue) =>
+          accumulator + (currentValue.selectProductAmount * currentValue.productDto.price)
+          ,
+          initialValue
+        );
       
       return sum
     },

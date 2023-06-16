@@ -32,7 +32,7 @@
 
                     <tr >
                         <th scope="row" > {{ i + 1 }}</th>
-                        <td width="10%"> <input type="checkbox"></td>
+                        <td width="10%"> <input type="checkbox" @change="handleCheckboxChange($event, item)"></td>
                         <td>
                             <img 
 
@@ -65,7 +65,9 @@
                         總金額 $ {{ sumCount }}
                     </div>
                     <div class="btn btn-success rounded-5 col-6 mt-3">
-                        結帳
+                        <router-link to="/checkoutPage" >
+                            結帳
+                        </router-link>
                     </div>
                 </tfoot>
         </table>
@@ -77,10 +79,16 @@
 <script>
 import { mapActions, mapState } from 'pinia'
 import cartStore from '../stores/cartStore.js'
+import 'https://unpkg.com/mitt/dist/mitt.umd.js'; // mitt
 
-
+const emitter = mitt()
 
 export default {
+    data() {
+        return {
+            checked:[]
+        }
+    },
     created() {
         this.getCartItem()
     },
@@ -90,7 +98,7 @@ export default {
         ...mapState(cartStore, ['cartList', 'count','sumCount','isLoading']),
     },
     methods: {
-        ...mapActions(cartStore, ['removeCartItem', 'addToCartAPI', 'getCartItem']),
+        ...mapActions(cartStore, ['removeCartItem', 'addToCartAPI', 'getCartItem','getProductToCheckout']),
         addHowMany(item) {
             item.selectProductAmount += 1;
             this.addToCartAPI(item.productDto.id, item.selectProductAmount)
@@ -102,18 +110,33 @@ export default {
                 item.selectProductAmount -= 1;
                 this.addToCartAPI(item.productDto.id, item.selectProductAmount)
             }
-        }
+        },
+        handleCheckboxChange(event, item) {
+            const isChecked = event.target.checked;
+            // 在这里处理 checkbox 的变化逻辑
+            // 可以根据需要访问 item 对象，它是当前循环项的引用
+
+            if (isChecked) {
+            // Checkbox 被选中
+                console.log('Checkbox被选中');
+                // console.log(item)
+                // emitter.emit('sendProduct', item)
+                this.checked.push(item) 
+                this.getProductToCheckout(this.checked)
+         
+            // 执行相应的操作
+            } else {
+            // Checkbox 被取消选中
+            console.log('Checkbox被取消选中');
+            // 执行相应的操作
+            }
+        },
     }
 };
 
 </script>
 
 <style scoped>
-/* table{
-    border-collapse: collapse;
-    border-spacing: 0;
-    table-layout: fixed;
-} */
 img{
     width: 100px;
     height: 100px;
@@ -126,5 +149,9 @@ img{
 }
 .productId-size{
     font-size: 5px;
+}
+a {
+    color: white;
+    text-decoration:none;
 }
 </style>

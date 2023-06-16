@@ -10,7 +10,8 @@ export default defineStore('productStore', {
             fuzzy: '',
             category: '',
             currentPage: 1,
-            totalPage:100,
+            totalPage: 100,
+            checked:[],
         }
     )
     ,
@@ -54,27 +55,26 @@ export default defineStore('productStore', {
             this.getProducts(searchVal, elSelected)
         },
         getProductCategory() {
+            this.options = []; // 清空选项数组
 
-        fetch("https://tom-store-api.onrender.com/tom-store-api/productCategory/ALL", {
-            method: "GET",
-            })
-            .then(response => response.json())
-            .then(data => {
-
-                let list = data.data.productCategoryDtoList
-            
-                list.forEach((item) => { 
-                let obj = {}
-                obj.label = item.note
-                obj.key = item.note
-                obj.value = item.id
-
-                this.options.push(obj)          
+            fetch("https://tom-store-api.onrender.com/tom-store-api/productCategory/ALL", {
+                method: "GET",
                 })
+                .then(response => response.json())
+                .then(data => {
 
-            })
-    },
-        
-        
+                    let list = data.data.productCategoryDtoList
+                
+                    list.forEach((item) => { 
+                    let obj = {}
+                    obj.label = item.note
+                    obj.key = item.note
+                    obj.value = item.id
+
+                    this.options.push(obj)          
+                    })
+
+                })
+        },       
     }
 })

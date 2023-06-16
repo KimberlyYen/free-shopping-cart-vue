@@ -7,17 +7,21 @@ import "bootstrap"
 import { createRouter, createWebHistory } from 'vue-router'
 import Home from './views/Home.vue'
 import ShoppingCart from './views/ShoppingCart.vue'
+import CheckoutPage from './views/CheckoutPage.vue'
 import ProductDetail from './views/ProductDetail.vue'
 import Success from './views/Success.vue'
 import Login from './views/Login.vue'
 // import Vue from 'vue'
 
+
+
 const router = createRouter ( {
-    history: createWebHistory(),
+    history: createWebHistory('/free-shopping-cart/'),
     routes: [
         { path: '/', name: 'Home', component: Home },
         { path: '/product', name: 'ProductDetail', component: ProductDetail},
         { path: '/shoppingCart', name: 'ShoppingCart', component: ShoppingCart },
+        { path: '/checkoutPage', name: 'CheckoutPage', component: CheckoutPage },
         { path: '/success', name: 'success', component: Success },
         { path: '/login', name: 'login', component: Login },
 

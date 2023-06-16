@@ -16,7 +16,9 @@ export default defineConfig({
       resolvers: [ElementPlusResolver()],
     }),
   ],
+  // base: './',
+  base: '/free-shopping-cart/',
   build: {
-          sourcemap: true,
-      },
+    sourcemap: true,
+  },
 })
