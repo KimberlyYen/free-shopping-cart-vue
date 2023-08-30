@@ -13,13 +13,7 @@
           <div class="d-flex flex-row ">
 
             <div class="col my-auto" v-if="displayName"> Hi ! 歡迎  <span class="text-primary">{{  displayName  }}</span>  </div>
-<!-- 
-            <router-link to="/memberInfo"  class="btn btn-info rounded-5 col-4 mt-auto text-center">
-              <div type="submit">
-                <i class="bi bi-gear-fill " style="font-size: 1rem; color: rgb(255, 255, 255);"></i>
-                會員資料設定
-              </div>
-            </router-link> -->
+
             <div class="dropdown">
               <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                 <i class="bi bi-gear-fill " style="font-size: 1rem; color: rgb(255, 255, 255);"> 設定 </i>
@@ -27,7 +21,7 @@
               <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                 <li>
                 
-                  <router-link v-if="!displayName"  to="/login" class="dropdown-item">
+                  <router-link v-if="!displayName" to="/login" class="dropdown-item">
                     <div type="submit">登入</div>
                   </router-link>
                 
@@ -36,15 +30,6 @@
                 <li><a class="dropdown-item" href="#">Something else here</a></li>
               </ul>
             </div>
-<!-- 
-            <router-link v-if="!displayName" to="/login"  class="btn btn-success rounded-5 col-2 mt-auto mx-3">
-              <div type="submit">登入</div>
-            </router-link> -->
-
-            <!-- <div class="btn btn-dark rounded-5 mx-2 col-2 mt-auto" type="submit" @click="removeToken">登出</div> -->
-            <!-- <div class="mt-auto mb-auto">
-              買家
-            </div> -->
 
           </div>
 
@@ -66,14 +51,14 @@
             </el-select>
 
             <button 
-              class="btn btn-outline-success w-50 mx-2" 
+              class="btn btn-outline-success w-75 mx-2" 
               type="submit" 
               @click.prevent="sendToParent(this.inputFromChild, this.value)"
               >
               搜索
             </button>
 
-            <router-link  class=" w-75" to="/shoppingCart">
+            <router-link  class=" w-100" to="/shoppingCart">
               <button class="btn btn-info " type="updateLocation">我的購物車</button>
             </router-link>
           </form>
