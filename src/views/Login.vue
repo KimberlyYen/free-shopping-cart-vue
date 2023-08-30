@@ -2,6 +2,14 @@
 
 <div class="login-page">
     <div class="form">
+
+      <form class="login-form" v-show="showLoginForm">
+        <input type="text" v-model="email" placeholder="Email" />
+        <input type="password" v-model="password" placeholder="password" />
+        <button @click.prevent="login(email, password)">login</button>
+        <p class="message">Not registered? <a href="#" @click.prevent="toggleForm">Create an account</a></p>
+      </form>
+
       <form class="register-form" v-show="!showLoginForm">
         <input type="text" v-model="name" placeholder="name" />
         <input type="password" v-model="password" placeholder="password" />
@@ -10,16 +18,11 @@
         <input type="text" v-model="gender" placeholder="MALE=男 FEMALE=女 OTHER=其他" />
         <input type="text" v-model="country" placeholder="country" />
 
-        <button @click.prevent="createAccount">create</button>
+        <button @click.prevent="createAccount(name,password,email,birthday,gender,country)">create</button>
         <p class="message">Already registered? <a href="#" @click.prevent="toggleForm">Sign In</a></p>
       </form>
 
-      <form class="login-form" v-show="showLoginForm">
-        <input type="text" v-model="email" placeholder="Email" />
-        <input type="password" v-model="password" placeholder="password" />
-        <button @click.prevent="login(email, password)">login</button>
-        <p class="message">Not registered? <a href="#" @click.prevent="toggleForm">Create an account</a></p>
-      </form>
+
     </div>
   </div>
 
@@ -34,20 +37,10 @@ import memberStore from '../stores/memberStore'
 export default {
   data() {
     return {
-      // name: '',
-      // username: '',
-      // password: '',
-      // email: '',
-      // birthday: '',
-      // gender: '',
-      // country: '',
       showLoginForm: true,
     };
   },
   computed: {
-  // 1. Store
-  // 2. 要帶入的 state, Getter
-  // ...mapState(memberStore, ['name', 'username', 'password','email','birthday','gender','country']),
   },
   methods: {
     ...mapActions(memberStore, ['login', 'createAccount']),   

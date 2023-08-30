@@ -37,6 +37,7 @@
 
             <div class="mb-4">
                 搜尋內容：
+
                 <span> {{this.fuzzy}} </span>
             </div>
             <div class="row justify-content-center">
@@ -145,4 +146,24 @@ data(){
     width: 100vw;
     height: 400px;
  }
+
+.happy{
+    font-size: 10px;
+    text-align: center;
+    color: white;
+    background: blue;
+    padding: 8px 16px;
+    width: 30%;
+    border-radius: 16px;
+
+}
+
+.green{
+    background: green;
+}
+
+.black{
+    background-color: #000000;
+}
+
 </style>

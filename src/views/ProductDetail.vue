@@ -26,7 +26,7 @@
 
                         <router-link to="/shoppingCart">
                             <a href="#" class="btn btn-primary" 
-                            @click="addToCart(productDetail.id, this.howMany)">加入購物車</a>
+                            @click="addToCart(productDetail.id,this.howMany),checkToken(productDetail.id,this.howMany)">加入購物車</a>
                         </router-link>
 
                 </div>
@@ -58,7 +58,7 @@ export default {
         this.getUrlId()
     },
     mounted() {
-        this.checkToken()
+        // this.checkToken()
     },
     computed: {
         // 1. Store
@@ -66,16 +66,14 @@ export default {
         ...mapState(cartStore, ['cart', 'totalProduct']),
     },
     methods: {
-        ...mapActions(cartStore,['addToCart', 'addToCartAPI']),  
+        ...mapActions(cartStore,['addToCart', 'addToCartAPI','checkToken']),  
         getUrlId() {
             let productId = this.$route.query.id
 
-            // console.log(productId)
             fetch(`https://tom-store-api.onrender.com/tom-store-api/product/${productId}`)
             .then(response => response.json())
             .then(data => { 
                 // console.log(data.data.productAmountDto.productDto)
-                
                 this.productDetail = data.data.productAmountDto.productDto
                 }
             )
@@ -83,18 +81,7 @@ export default {
         sum(event) {
             this.total = event.currentTarget.value * this.productDetail.price
         },
-        checkToken() {
-            // 在这里进行检查Token的逻辑
-            const token = localStorage.getItem('token');
-            if (token) {
-                this.hasToken = true;
-                console.log('YES')
-            } else {
-                this.hasToken = false;
-                console.log('NO')
-                this.$router.push('/login');
-            }
-        },
+  
     },
 
 }

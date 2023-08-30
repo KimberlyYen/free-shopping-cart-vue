@@ -13,7 +13,7 @@
             </div>
         </div>
         
-        <div v-if="!cartList.length"> 購物車沒有任何品項 </div>
+        <div v-if="!cartList.length"> 購物車沒有任何品項 {{ this.hasToken  }}</div>
         <table v-else class="table">
                 <thead>
                     <tr>
@@ -38,7 +38,8 @@
 
                             :src="item.productDto.mainProductImgDisplayUrl" alt="productIMG">
                         </td>
-                        <td  class="col-3"> {{ item.productDto.productName }} <br/> <span class="productId-size">{{  item.productDto.id }}</span></td>
+
+                        <td  class="col-3"> {{ item.productDto.productName }} <br/> <span class="productId-size">id:{{  item.productDto.id }}</span></td>
                        
                         <td >
                             <div class="d-flex flex-row gap-2">
@@ -79,9 +80,7 @@
 <script>
 import { mapActions, mapState } from 'pinia'
 import cartStore from '../stores/cartStore.js'
-import 'https://unpkg.com/mitt/dist/mitt.umd.js'; // mitt
 
-const emitter = mitt()
 
 export default {
     data() {
@@ -90,7 +89,10 @@ export default {
         }
     },
     created() {
-        this.getCartItem()
+        if (this.cartList) {
+            this.getCartItem()
+        }
+        // this.checkToken()
     },
     computed: {
         // 1. Store
@@ -98,7 +100,7 @@ export default {
         ...mapState(cartStore, ['cartList', 'count','sumCount','isLoading']),
     },
     methods: {
-        ...mapActions(cartStore, ['removeCartItem', 'addToCartAPI', 'getCartItem','getProductToCheckout']),
+        ...mapActions(cartStore, ['removeCartItem', 'addToCartAPI', 'getCartItem','getProductToCheckout','checkToken']),
         addHowMany(item) {
             item.selectProductAmount += 1;
             this.addToCartAPI(item.productDto.id, item.selectProductAmount)

@@ -11,6 +11,7 @@ import CheckoutPage from './views/CheckoutPage.vue'
 import ProductDetail from './views/ProductDetail.vue'
 import Success from './views/Success.vue'
 import Login from './views/Login.vue'
+import MemberInfoPage from './views/MemberInfoPage.vue'
 // import Vue from 'vue'
 
 
@@ -24,14 +25,16 @@ const router = createRouter ( {
         { path: '/checkoutPage', name: 'CheckoutPage', component: CheckoutPage },
         { path: '/success', name: 'success', component: Success },
         { path: '/login', name: 'login', component: Login },
-
-        
-        
+        { path: '/memberInfo', name: 'memberInfo', component: MemberInfoPage },        
     ]
 })
 
 const pinia = createPinia()
 
+// 關閉瀏覽器的時候，清除localstorage怎麼做
+// window.addEventListener('unload', function() {
+//   localStorage.clear();
+// });
 
 
 

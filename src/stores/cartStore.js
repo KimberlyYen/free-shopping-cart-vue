@@ -10,14 +10,14 @@ export default defineStore('cart', {
       cartList: [],
       count: 100,
       isLoading: false,
-      checkoutList:[],
+      checkoutList: [],
+      lastSelectedItem:{},
     };
   },
   actions: {
     addToCart(productId, howMany) {
       // 取得已經有加入購物車的項目
       // 進行判斷，如果購物車有該項目則 +1，如果沒有則是新增一個購物車項目
-      
        const currentCart = this.cartList.find((item) => item.productDto.id === productId)
 
       if (currentCart) {
@@ -59,14 +59,14 @@ export default defineStore('cart', {
             })
             .then(response => response.json())
             .then(data => {
-              console.log(data, 'data')
+              // console.log(data, 'data')
               // location.reload()
               this.getCartItem()
              
             })
     },
     removeCartItem(id, selectProductAmount) {
-      console.log(id, selectProductAmount)
+      // console.log(id, selectProductAmount)
 
       const tokenNow = localStorage.getItem("shopCartToken");
 
@@ -124,10 +124,6 @@ export default defineStore('cart', {
             'Access-Control-Allow-Origin': '*',
             'authorization': "Bearer" + " " + tokenNow 
             },
-            // body: JSON.stringify({
-            //   "productAmount": howMany,
-            //   "productId":productId,
-            // }),
             })
             .then(response => response.json())
             .then(data => {
@@ -141,7 +137,21 @@ export default defineStore('cart', {
     },
     getProductToCheckout(item) {
         this.checkoutList = item
-    }
+    },
+    checkToken() {
+      // 在这里进行检查Token的逻辑
+      const token = localStorage.getItem('shopCartToken');
+      if (token) {
+          // alert('已加入購物車')
+          this.hasToken = true;
+          // console.log('YES')
+        } else {
+          alert('請先登入會員')
+          this.hasToken = false;
+          // console.log('NO')
+          window.location.href = '/free-shopping-cart/login';
+        }
+  },
   },
   getters: {
     sumCount(state) {

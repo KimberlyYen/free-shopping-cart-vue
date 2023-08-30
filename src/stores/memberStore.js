@@ -4,19 +4,9 @@ import { createRouter, createWebHistory } from 'vue-router'
 export default defineStore('memberStore', {
     state: () => (    
         {
-            // email: '',
-            // password: '',
-            // name: '',
-            // username: '',
-            // birthday: '',
-            // gender: '',
-            // country: '',
             tokenToComponent:'',
         }
-    )
-    ,
-    getters: {
-    },
+    ),
     actions: {
         // this
     login(email, password) {
@@ -41,27 +31,23 @@ export default defineStore('memberStore', {
         .then(data => {
         let token = data.data.access_token
         localStorage.setItem('shopCartToken', token);
-        
-      }).finally(() => {
         alert('Success!')
+        history.go(-1)
+        
+        }).catch((error) => { 
+          console.log(error)
+          alert("Error:", error.rm)
+        }).finally(() => {
 
         // const tokenNow = localStorage.getItem("shopCartToken");
-        history.go(-1)
         });
       
       // 清空表单
       this.username = '';
       this.password = '';
-        },
-      createAccount() {
+    },
+    createAccount(name,password,email,birthday,gender,country) {
       // 获取用户名、密码和邮箱
-      const name = this.name;
-      const password = this.password;
-      const email = this.email;
-      const birthday = this.birthday;
-      const gender = this.gender;
-      const country = this.country;
-
       
       // 在这里可以进行进一步的处理，例如创建账号
       fetch("https://tom-store-api.onrender.com/tom-store-api/member/signUp", {
@@ -81,9 +67,11 @@ export default defineStore('memberStore', {
         })
         .then(response => response.json())
         .then(data => {
-          console.log(data)
-            alert('Success!')
-            this.$router.push('/');
+          // console.log(data)
+          alert('Success!')
+            // this.$router.push('/');
+           history.go(-1)
+          
         })
       
         // 清空表单
