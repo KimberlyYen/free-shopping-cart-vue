@@ -1,7 +1,7 @@
 <template>
 
     <div class="container ShoppingCart">
-        <h2>ShoppingCart</h2>
+        <h2>ProductManage 產品管理</h2>
 
         <!-- Loading -->
         <div  v-if="isLoading" class="d-flex justify-content-center align-items-center">
@@ -85,8 +85,7 @@ import cartStore from '../stores/cartStore.js'
 export default {
     data() {
         return {
-            checked: [],
-            hasToken:''
+            checked:[]
         }
     },
     created() {

@@ -14,20 +14,36 @@
 
             <div class="col my-auto" v-if="displayName"> Hi ! 歡迎  <span class="text-primary">{{  displayName  }}</span>  </div>
 
-            <div class="dropdown">
+            <!-- 設定按鈕/下拉選單 -->
+            <div class="dropdown dropstart">
               <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                 <i class="bi bi-gear-fill " style="font-size: 1rem; color: rgb(255, 255, 255);"> 設定 </i>
               </button>
               <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+
                 <li>
-                
                   <router-link v-if="!displayName" to="/login" class="dropdown-item">
                     <div type="submit">登入</div>
                   </router-link>
-                
                 </li>
+
                 <li><a class="dropdown-item" @click="removeToken">登出</a></li>
-                <li><a class="dropdown-item" href="#">Something else here</a></li>
+                <li><a class="dropdown-item" href="#">切換身分</a></li>
+                <!-- <li><a class="dropdown-item" href="#">會員資料管理</a></li> -->
+                <li>
+                  <router-link to="/memberInfo" class="dropdown-item">
+                    <div type="submit">會員資料管理</div>
+                  </router-link>
+                </li>
+
+                <li>
+
+                  <!-- <a class="dropdown-item" href="#">產品管理</a> -->
+                  <div class="dropdown-item" @click="goToProductManage">
+                    <div>產品管理</div>
+                  </div>
+
+                </li>
               </ul>
             </div>
 
@@ -58,9 +74,12 @@
               搜索
             </button>
 
-            <router-link  class=" w-100" to="/shoppingCart">
-              <button class="btn btn-info " type="updateLocation">我的購物車</button>
-            </router-link>
+            <div class="btn btn-info w-100 ">
+              <router-link to="/shoppingCart" class="text-white">
+                  我的購物車
+              </router-link>
+            </div>
+
           </form>
   
         </div>
@@ -71,8 +90,7 @@
 <script >
 import { mapState, mapActions } from 'pinia'
 import productStore from '../stores/productStore'
-
-
+import memberStore from '../stores/memberStore'
 
 export default {
   data() {
@@ -80,7 +98,6 @@ export default {
       selected: '',
       inputFromChild: '',
       value: '',
-      displayName:''
       }
   }, 
   created() {
@@ -95,9 +112,11 @@ export default {
   },  
   computed: {
     ...mapState(productStore, ['options']),
+    ...mapState(memberStore, ['displayName','memberTypes']),
   },
   methods: {
-    ...mapActions(productStore, ['sendToParent', 'getProductCategory']),    
+    ...mapActions(productStore, ['sendToParent', 'getProductCategory']),  
+    ...mapActions(memberStore, ['getMember','goToProductManage']),    
     removeToken() {
       alert('您已成功登出')
       // localStorage.removeItem("shopCartToken");
@@ -105,24 +124,10 @@ export default {
       this.$router.push('/')
       location.reload()
     },
-    getMember() {
-         
-      const tokenNow = localStorage.getItem("shopCartToken");
-
-      fetch("https://tom-store-api.onrender.com/tom-store-api/member", {
-          method: "GET",
-          headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-          'authorization': "Bearer" + " " + tokenNow 
-          },
-      })
-      .then(response => response.json())
-      .then(data => {
-        this.displayName = data.data.displayName
-      })
-
-    },
+    goToProductManage() {
+      console.log(this.memberTypes)
+      this.$router.push('./productManage')
+    }
 
   },
 }

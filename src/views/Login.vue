@@ -38,6 +38,13 @@ export default {
   data() {
     return {
       showLoginForm: true,
+      name: '',
+      password: '',
+      email: '',
+      birthday: '',
+      gender: '',
+      country:''
+    
     };
   },
   computed: {

@@ -12,20 +12,22 @@ import ProductDetail from './views/ProductDetail.vue'
 import Success from './views/Success.vue'
 import Login from './views/Login.vue'
 import MemberInfoPage from './views/MemberInfoPage.vue'
+import ProductManage from './views/ProductManage.vue'
 // import Vue from 'vue'
 
 
 
-const router = createRouter ( {
+const router = createRouter({
     history: createWebHistory('/free-shopping-cart/'),
     routes: [
         { path: '/', name: 'Home', component: Home },
-        { path: '/product', name: 'ProductDetail', component: ProductDetail},
+        { path: '/product', name: 'ProductDetail', component: ProductDetail },
         { path: '/shoppingCart', name: 'ShoppingCart', component: ShoppingCart },
         { path: '/checkoutPage', name: 'CheckoutPage', component: CheckoutPage },
         { path: '/success', name: 'success', component: Success },
         { path: '/login', name: 'login', component: Login },
-        { path: '/memberInfo', name: 'memberInfo', component: MemberInfoPage },        
+        { path: '/memberInfo', name: 'memberInfo', component: MemberInfoPage },
+        { path: '/productManage', name: 'productManage', component: ProductManage },
     ]
 })
 
