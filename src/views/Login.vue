@@ -6,7 +6,7 @@
       <form class="login-form" v-show="showLoginForm">
         <input type="text" v-model="email" placeholder="Email" />
         <input type="password" v-model="password" placeholder="password" />
-        <button @click.prevent="login(email, password)">login</button>
+        <button @click.prevent="login(email, password, this, callback)">login</button>
         <p class="message">Not registered? <a href="#" @click.prevent="toggleForm">Create an account</a></p>
       </form>
 
@@ -39,12 +39,11 @@ export default {
     return {
       showLoginForm: true,
       name: '',
-      password: '',
       email: '',
+      password: '',
       birthday: '',
       gender: '',
       country:''
-    
     };
   },
   computed: {
@@ -54,7 +53,10 @@ export default {
     toggleForm() {
       // 切换登录和注册表单的显示
       this.showLoginForm = !this.showLoginForm;
-    }   
+    },
+    callback() {
+      alert('ABC')
+    }
   }
 };
 </script>

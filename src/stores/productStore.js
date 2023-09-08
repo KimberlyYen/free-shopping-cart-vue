@@ -3,7 +3,7 @@ import { defineStore } from 'pinia'
 
 
 export default defineStore('productStore', {
-    state: () => (    
+    state: () => (
         {
             posts: [],
             options: [],
@@ -11,37 +11,36 @@ export default defineStore('productStore', {
             category: '',
             currentPage: 1,
             totalPage: 100,
-            checked:[],
+            checked: [],
         }
     )
     ,
     getters: {
-        sortProduct: (state) => state.posts.sort((a,b) => a.price - b.price)
+        sortProduct: (state) => state.posts.sort((a, b) => a.price - b.price)
     },
     actions: {
         // this
         getProducts(searchVal, elSelected) {
 
-        fetch("https://tom-store-api.onrender.com/tom-store-api/product/pagination", {
+            fetch("https://tom-store-api.onrender.com/tom-store-api/product/pagination", {
                 method: "POST",
                 headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
                     "pageNum": this.currentPage,
                     "pageSize": 10,
                     "fuzzyProductName": searchVal,
-                    "productCategoryId":elSelected,
+                    "productCategoryId": elSelected,
                 }),
             })
-            .then(response => response.json())
-            .then(data => {
-                // console.log(data.data.productPageInfo.total)
-                
-                this.posts = data.data.productPageInfo.list
-                this.totalPage = data.data.productPageInfo.total
-            })
+                .then(response => response.json())
+                .then(data => {
+                    // console.log(data.data.productPageInfo.total)
+                    this.posts = data.data.productPageInfo.list
+                    this.totalPage = data.data.productPageInfo.total
+                })
 
         },
         handleCurrentPage(val) {
@@ -59,22 +58,22 @@ export default defineStore('productStore', {
 
             fetch("https://tom-store-api.onrender.com/tom-store-api/productCategory/ALL", {
                 method: "GET",
-                })
+            })
                 .then(response => response.json())
                 .then(data => {
 
                     let list = data.data.productCategoryDtoList
-                
-                    list.forEach((item) => { 
-                    let obj = {}
-                    obj.label = item.note
-                    obj.key = item.note
-                    obj.value = item.id
 
-                    this.options.push(obj)          
+                    list.forEach((item) => {
+                        let obj = {}
+                        obj.label = item.note
+                        obj.key = item.note
+                        obj.value = item.id
+
+                        this.options.push(obj)
                     })
 
                 })
-        },       
+        },
     }
 })

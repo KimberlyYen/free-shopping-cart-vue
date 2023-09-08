@@ -25,7 +25,6 @@
                     <th scope="col">數量</th>
                     <th scope="col">價格</th>
                     <th scope="col">小計</th>
-                    <th scope="col">刪除</th>
                 </tr>
             </thead>
                 
@@ -57,7 +56,7 @@
 
             <div class="footer justify-content-center gap-4">
                 <div class="mt-3 col-2">
-                    總金額 $ {{ sumCountCheckout }}
+                    總金額 $ {{ sumCount }}
                 </div>
 
                 <router-link to="/shoppingCart" class="btn btn-danger rounded-5 col-2 mt-3">
@@ -126,7 +125,7 @@ export default {
     computed: {
         // 1. Store
         // 2. 要帶入的 state, Getter
-        ...mapState(cartStore, ['checkoutList', 'count','sumCountCheckout','isLoading']),
+        ...mapState(cartStore, ['checkoutList', 'count','sumCount','isLoading']),
     },
     methods: {
         ...mapActions(cartStore, ['removeCartItem', 'addToCartAPI', 'getCartItem']),

@@ -6,14 +6,22 @@ export default defineStore('memberStore', {
     {
       tokenToComponent: '',
       account: '',
-      gender: '',
+      newAccount: '',
+      memberData: {},
+      updateAccount: '',
+      memberTypes: '',
+      password: '',
+      birthday: '',
+      country: '',
       displayName: '',
-      memberTypes: ''
+      gender: '',
+      note: '',
+
     }
   ),
   actions: {
     // this
-    login(email, password) {
+    login(email, password, this_, callback) {
       // 获取用户名和密码        
       // console.log(email)
       // console.log(password)
@@ -35,8 +43,9 @@ export default defineStore('memberStore', {
           const data = response.data;
           const token = data.data.access_token;
           localStorage.setItem('shopCartToken', token);
+          // callback()
           alert('Success!');
-          history.go(-1);
+          this_.$router.push('./')
         })
         .catch(error => {
           console.error(error);
@@ -68,6 +77,7 @@ export default defineStore('memberStore', {
         country: country,
       };
 
+
       axios.post("https://tom-store-api.onrender.com/tom-store-api/member/signUp", signupData, {
         headers: {
           'Accept': 'application/json',
@@ -93,35 +103,82 @@ export default defineStore('memberStore', {
 
       const tokenNow = localStorage.getItem("shopCartToken");
 
-      fetch("https://tom-store-api.onrender.com/tom-store-api/member", {
-        method: "GET",
+      axios.get("https://tom-store-api.onrender.com/tom-store-api/member", {
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'authorization': "Bearer " + tokenNow
+        }
+      })
+        .then(response => {
+          const data = response.data;
+          console.log(data.data);
+          this.memberData = data.data
+          // 在这里设置您的变量，如下所示
+          this.birthday = data.data.birthday
+          this.country = data.data.country
+          this.displayName = data.data.displayName;
+          this.gender = data.data.gender;
+          this.memberTypes = data.data.memberTypes;
+          this.note = data.data.note;
+          this.account = data.data.email;
+        })
+        .catch(error => {
+          console.error("请求出错：", error);
+          alert(error.response.data.rm)
+        });
+
+
+    },
+    updateMember(newBirthday, newCountry, newDisplayName, newGender, newMemberTypes, newNote, newPassword) {
+
+      const tokenNow = localStorage.getItem("shopCartToken");
+
+      console.log(newBirthday)
+      // // 在这里可以进行进一步的处理，例如登录验证
+      const updateData = {
+        birthday: newBirthday,
+        country: newCountry,
+        displayName: newDisplayName,
+        gender: newGender,
+        memberTypes: newMemberTypes,
+        note: newNote,
+        password: newPassword,
+      };
+
+      // console.log(updateData)
+
+      axios.put("https://tom-store-api.onrender.com/tom-store-api/member", updateData, {
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json',
           'authorization': "Bearer" + " " + tokenNow
-        },
+        }
       })
-        .then(response => response.json())
-        .then(data => {
-          console.log(data.data)
-          this.account = data.data.email
-          this.gender = data.data.gender
-          this.displayName = data.data.displayName
-          // this.goToProductManage(data.data.memberTypes)
-          this.memberTypes = data.data.memberTypes
+        .then(response => {
+          const data = response.data;
+          console.log(data)
+          alert('Success Update!')
         })
+        .catch(error => {
+          console.error(error);
+          if (error.response) {
+            alert("Error: " + error.response.data.rm);
+          } else {
+            alert("An error occurred");
+          }
+        })
+        .finally(() => {
+          // ...
+        });
 
+
+      // 清空表单
+      this.username = '';
+      this.password = '';
     },
-    // goToProductManage(memberTypes) {
-    //   // console.log('memberTypes')
-    //   console.log(memberTypes)
-    //   if (memberTypes === 'CUSTOMER') {
-    //     // router.push({ path: '/productManage' });
-    //     // router.push({ path: 'productManage' })
-    //     this.router.push('/productManage')
-    //   }
-    // }
 
 
-  }
+
+  },
 })

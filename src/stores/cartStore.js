@@ -11,59 +11,59 @@ export default defineStore('cart', {
       count: 100,
       isLoading: false,
       checkoutList: [],
-      lastSelectedItem:{},
+      lastSelectedItem: {},
     };
   },
   actions: {
     addToCart(productId, howMany) {
       // 取得已經有加入購物車的項目
       // 進行判斷，如果購物車有該項目則 +1，如果沒有則是新增一個購物車項目
-       const currentCart = this.cartList.find((item) => item.productDto.id === productId)
+      const currentCart = this.cartList.find((item) => item.productDto.id === productId)
 
       if (currentCart) {
         currentCart.selectProductAmount += howMany
         // currentCart.total += total
 
         this.addToCartAPI(productId, currentCart.selectProductAmount)
-            
+
       } else {
         this.cart.push({
           id: new Date().getTime(),
           productId,
           howMany,
           // total,
-        }) 
+        })
 
         this.addToCartAPI(productId, howMany)
       }
-        
+
 
     },
     addToCartAPI(productId, howMany) {
 
       const tokenNow = localStorage.getItem("shopCartToken");
-      
-          fetch("https://tom-store-api.onrender.com/tom-store-api/shoppingCart", {
-            method: "POST",
-            headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-            'Access-Control-Allow-Origin': '*',
-            'authorization': "Bearer" + " " + tokenNow 
-            },
-            body: JSON.stringify({
-              "selectProductAmount": howMany,
-              "productId": productId,
-              
-            }),
-            })
-            .then(response => response.json())
-            .then(data => {
-              // console.log(data, 'data')
-              // location.reload()
-              this.getCartItem()
-             
-            })
+
+      fetch("https://tom-store-api.onrender.com/tom-store-api/shoppingCart", {
+        method: "POST",
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*',
+          'authorization': "Bearer" + " " + tokenNow
+        },
+        body: JSON.stringify({
+          "selectProductAmount": howMany,
+          "productId": productId,
+
+        }),
+      })
+        .then(response => response.json())
+        .then(data => {
+          // console.log(data, 'data')
+          // location.reload()
+          this.getCartItem()
+
+        })
     },
     removeCartItem(id, selectProductAmount) {
       // console.log(id, selectProductAmount)
@@ -75,109 +75,109 @@ export default defineStore('cart', {
       // this.cart.splice(index, 1)
 
       // 確認是否刪除商品
-         let deleteCheck 
-         if (confirm("確定要刪除嗎") == true) {
-          deleteCheck = 0
-          } else {
-            deleteCheck = selectProductAmount
-          }
-  
+      let deleteCheck
+      if (confirm("確定要刪除嗎") == true) {
+        deleteCheck = 0
+      } else {
+        deleteCheck = selectProductAmount
+      }
+
       // 確認刪除則，如果產品數量設成0，則將該產品會從該會員購物車移除  
-          fetch("https://tom-store-api.onrender.com/tom-store-api/shoppingCart", {
-            method: "PATCH",
-            headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-            'Access-Control-Allow-Origin': '*',
-            'authorization': "Bearer" + " " + tokenNow 
-            },
-            body: JSON.stringify({
-              updateShoppingCartDtoList: [
-                {
-                  "productId": id,
-                  "selectProductAmount": deleteCheck,
-                }
-              ]
-            }),
-            })
-            .then(response => response.json())
-            .then(data => {
-              // console.log(data, 'data')
-              // this.isLoading = true;
-            }).finally(() => {
-              // this.isLoading = false; // 请求完成后，将isLoading设置为false，隐藏加载动画
-               location.reload()
-            });
+      fetch("https://tom-store-api.onrender.com/tom-store-api/shoppingCart", {
+        method: "PATCH",
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*',
+          'authorization': "Bearer" + " " + tokenNow
+        },
+        body: JSON.stringify({
+          updateShoppingCartDtoList: [
+            {
+              "productId": id,
+              "selectProductAmount": deleteCheck,
+            }
+          ]
+        }),
+      })
+        .then(response => response.json())
+        .then(data => {
+          // console.log(data, 'data')
+          // this.isLoading = true;
+        }).finally(() => {
+          // this.isLoading = false; // 请求完成后，将isLoading设置为false，隐藏加载动画
+          location.reload()
+        });
 
     },
     getCartItem() {
 
       const tokenNow = localStorage.getItem("shopCartToken");
 
-        this.isLoading = true;
+      this.isLoading = true;
 
-        fetch("https://tom-store-api.onrender.com/tom-store-api/shoppingCart", {
-            method: "GET",
-            headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-            'Access-Control-Allow-Origin': '*',
-            'authorization': "Bearer" + " " + tokenNow 
-            },
-            })
-            .then(response => response.json())
-            .then(data => {
-              
-              this.cartList = data.data.shoppingCartDtoList
-              // console.log(this.cartList, 'dataCartList')
-              // location.reload()
-            }).finally(() => {
-              this.isLoading = false; // 请求完成后，将isLoading设置为false，隐藏加载动画
-            });
+      fetch("https://tom-store-api.onrender.com/tom-store-api/shoppingCart", {
+        method: "GET",
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*',
+          'authorization': "Bearer" + " " + tokenNow
+        },
+      })
+        .then(response => response.json())
+        .then(data => {
+
+          this.cartList = data.data.shoppingCartDtoList
+          // console.log(this.cartList, 'dataCartList')
+          // location.reload()
+        }).finally(() => {
+          this.isLoading = false; // 请求完成后，将isLoading设置为false，隐藏加载动画
+        });
     },
     getProductToCheckout(item) {
-        this.checkoutList = item
+      this.checkoutList = item
     },
     checkToken() {
       // 在这里进行检查Token的逻辑
       const token = localStorage.getItem('shopCartToken');
       if (token) {
-          // alert('已加入購物車')
-          this.hasToken = true;
-          // console.log('YES')
-        } else {
-          alert('請先登入會員')
-          this.hasToken = false;
-          // console.log('NO')
-          window.location.href = '/free-shopping-cart/login';
-        }
-  },
+        // alert('已加入購物車')
+        this.hasToken = true;
+        // console.log('YES')
+      } else {
+        alert('請先登入會員')
+        this.hasToken = false;
+        // console.log('NO')
+        window.location.href = '/free-shopping-cart/login';
+      }
+    },
   },
   getters: {
     sumCount(state) {
-      
+
       const initialValue = 0;
       const sum = state.cartList.reduce(
         (accumulator, currentValue) =>
           accumulator + (currentValue.selectProductAmount * currentValue.productDto.price)
-          ,
-          initialValue
-        );
-      
+        ,
+        initialValue
+      );
+
       return sum
     },
-    sumCountCheckout(state) {
-      
-      const initialValue = 0;
-      const sum = state.checkoutList.reduce(
-        (accumulator, currentValue) =>
-          accumulator + (currentValue.selectProductAmount * currentValue.productDto.price)
-          ,
-          initialValue
-        );
-      
-      return sum
-    },
+    // sumCountCheckout(state) {
+
+    //   const initialValue = 0;
+    //   const sum = state.checkoutList.reduce(
+    //     (accumulator, currentValue) =>
+    //       accumulator + (currentValue.selectProductAmount * currentValue.productDto.price)
+    //       ,
+    //       initialValue
+    //     );
+
+    //   return sum
+    // },
     // cartList: ({ cart }) => {
     //   const { posts } = productStore()
 

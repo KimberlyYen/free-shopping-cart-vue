@@ -9,10 +9,12 @@
        
       </div>
 
+
         <div>
           <div class="d-flex flex-row ">
 
             <div class="col my-auto" v-if="displayName"> Hi ! 歡迎  <span class="text-primary">{{  displayName  }}</span>  </div>
+            <div  class="col my-auto" v-else>  <span class="text-primary">您尚未登入 </span></div>
 
             <!-- 設定按鈕/下拉選單 -->
             <div class="dropdown dropstart">
@@ -27,11 +29,21 @@
                   </router-link>
                 </li>
 
-                <li><a class="dropdown-item" @click="removeToken">登出</a></li>
-                <li><a class="dropdown-item" href="#">切換身分</a></li>
+                <li >
+                  <a v-if="displayName" class="dropdown-item" @click="removeToken">登出</a>
+                </li>
+
+
+                <li
+                v-if="memberTypes === 'SELLER' || memberTypes === 'ADMIN' || memberTypes === 'ADMIN,SELLER' || memberTypes === 'ADMIN,SELLER,CUSTOMER' "
+                ><a class="dropdown-item" href="#" @click="checkWhoYouAre" data-bs-target="#exampleModal" data-bs-toggle="modal">切換身分</a>
+              </li>
+
+                <!-- <li>{{ memberTypes }}</li> -->
+
                 <!-- <li><a class="dropdown-item" href="#">會員資料管理</a></li> -->
                 <li>
-                  <router-link to="/memberInfo" class="dropdown-item">
+                  <router-link v-if="memberTypes === 'SELLER' || memberTypes === 'ADMIN' || memberTypes === 'SELLER,ADMIN' " to="/memberInfo" class="dropdown-item">
                     <div type="submit">會員資料管理</div>
                   </router-link>
                 </li>
@@ -39,7 +51,7 @@
                 <li>
 
                   <!-- <a class="dropdown-item" href="#">產品管理</a> -->
-                  <div class="dropdown-item" @click="goToProductManage">
+                  <div v-if="memberTypes === 'SELLER'" class="dropdown-item" @click="goToProductManage">
                     <div>產品管理</div>
                   </div>
 
@@ -84,6 +96,28 @@
   
         </div>
     </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">切換身份</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            目前為 {{ memberTypes }}
+            <br>
+            請確認，是否切換身分？
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary">確定切換身份</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     </nav>
 
 </template>
@@ -125,9 +159,16 @@ export default {
       location.reload()
     },
     goToProductManage() {
+      console.log(tokenToComponent)
       console.log(this.memberTypes)
       this.$router.push('./productManage')
+    },
+    checkWhoYouAre() {
+      if (memberTypes === "") {
+        this.$router.push('/')
+      } 
     }
+
 
   },
 }

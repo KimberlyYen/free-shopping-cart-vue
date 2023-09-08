@@ -93,7 +93,6 @@ export default {
         if (this.cartList) {
             this.getCartItem()
         }
-        // this.checkToken()
     },
     computed: {
         // 1. Store
@@ -109,9 +108,13 @@ export default {
         removeHowMany(item) {
             if (item.selectProductAmount <= 0) {
                 item.selectProductAmount = 0
+                // alert('您要刪除項目嗎？')
             } else {
                 item.selectProductAmount -= 1;
                 this.addToCartAPI(item.productDto.id, item.selectProductAmount)
+            }
+            if (item.selectProductAmount === 0) {
+                this.removeCartItem(item.productDto.id, item.selectProductAmount)
             }
         },
         handleCheckboxChange(event, item) {
