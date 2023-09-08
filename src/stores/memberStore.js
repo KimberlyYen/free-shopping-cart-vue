@@ -112,7 +112,7 @@ export default defineStore('memberStore', {
       })
         .then(response => {
           const data = response.data;
-          console.log(data.data);
+          // console.log(data.data);
           this.memberData = data.data
           // 在这里设置您的变量，如下所示
           this.birthday = data.data.birthday

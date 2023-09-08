@@ -32,7 +32,9 @@
 
                     <tr >
                         <th scope="row" > {{ i + 1 }}</th>
-                        <td width="10%"> <input type="checkbox" @change="handleCheckboxChange($event, item)"></td>
+                        <td width="10%"> 
+                            <input type="checkbox" @change="handleCheckboxChange($event, item)">
+                        </td>
                         <td>
                             <img 
 
@@ -66,9 +68,11 @@
                         總金額 $ {{ sumCount }}
                     </div>
                     <div class="btn btn-success rounded-5 col-6 mt-3">
-                        <router-link to="/checkoutPage" >
-                            結帳
-                        </router-link>
+                        <!-- <router-link to="/checkoutPage" >
+                        </router-link> -->
+                            <div @click="goToCheckoutPage">
+                                結帳
+                            </div>
                     </div>
                 </tfoot>
         </table>
@@ -86,6 +90,7 @@ export default {
     data() {
         return {
             checked: [],
+            checkedIds: [],
             hasToken:''
         }
     },
@@ -108,7 +113,6 @@ export default {
         removeHowMany(item) {
             if (item.selectProductAmount <= 0) {
                 item.selectProductAmount = 0
-                // alert('您要刪除項目嗎？')
             } else {
                 item.selectProductAmount -= 1;
                 this.addToCartAPI(item.productDto.id, item.selectProductAmount)
@@ -122,21 +126,35 @@ export default {
             // 在这里处理 checkbox 的变化逻辑
             // 可以根据需要访问 item 对象，它是当前循环项的引用
 
+            //第一個參數為被選到的事件
             if (isChecked) {
             // Checkbox 被选中
-                console.log('Checkbox被选中');
-                // console.log(item)
-                // emitter.emit('sendProduct', item)
+                console.log('Checkbox被選中');  
+
+                // item 商品 push 組合陣列
                 this.checked.push(item) 
-                this.getProductToCheckout(this.checked)
-         
-            // 执行相应的操作
+                // id 商品 push 組合陣列
+                this.checkedIds.push(item.productDto.id) 
+                // 組合陣列 和 組合商品id , 帶到結帳頁面
+                this.getProductToCheckout(this.checked, this.checkedIds)
+
             } else {
-            // Checkbox 被取消选中
-            console.log('Checkbox被取消选中');
-            // 执行相应的操作
+                // Checkbox 被取消选中
+                console.log('Checkbox被取消选中');
+
+                // 已經存在於陣列中，不重複添加
+                // 刪除陣列中某個被指定下標的元素
+                this.checked.splice(item, 1)
+
             }
         },
+        goToCheckoutPage() {
+            if (this.checked.length === 0) {
+                alert('您尚未勾選商品')
+            } else {
+                this.$router.push('/checkoutPage')
+            }
+        }
     }
 };
 

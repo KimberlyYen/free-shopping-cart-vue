@@ -1,16 +1,17 @@
 import { defineStore } from 'pinia'
+import axios from 'axios';
 
 export default defineStore('cart', {
   // 在此可以使用箭頭函式，不過其它地方一樣不行
   state: () => {
     return {
-      // productDetail: [],
       cart: [],
       totalProduct: 0,
       cartList: [],
       count: 100,
       isLoading: false,
       checkoutList: [],
+      checkoutListIds: [],
       lastSelectedItem: {},
     };
   },
@@ -65,22 +66,15 @@ export default defineStore('cart', {
 
         })
     },
-    removeCartItem(id, selectProductAmount) {
-      // console.log(id, selectProductAmount)
-
+    removeCartItem(id) {
       const tokenNow = localStorage.getItem("shopCartToken");
-
-      // const index = this.cart.findIndex((item) => { item.id === id })
-      // console.log(this.cart)
-      // this.cart.splice(index, 1)
 
       // 確認是否刪除商品
       let deleteCheck
-      if (confirm("確定要刪除嗎") == true) {
+      if (window.confirm("確定要刪除嗎?")) {
         deleteCheck = 0
-      } else {
-        deleteCheck = selectProductAmount
       }
+
 
       // 確認刪除則，如果產品數量設成0，則將該產品會從該會員購物車移除  
       fetch("https://tom-store-api.onrender.com/tom-store-api/shoppingCart", {
@@ -103,9 +97,7 @@ export default defineStore('cart', {
         .then(response => response.json())
         .then(data => {
           // console.log(data, 'data')
-          // this.isLoading = true;
         }).finally(() => {
-          // this.isLoading = false; // 请求完成后，将isLoading设置为false，隐藏加载动画
           location.reload()
         });
 
@@ -135,8 +127,25 @@ export default defineStore('cart', {
           this.isLoading = false; // 请求完成后，将isLoading设置为false，隐藏加载动画
         });
     },
-    getProductToCheckout(item) {
+    getProductToCheckout(item, ids) {
       this.checkoutList = item
+      this.checkoutListIds = ids
+    },
+    goToCheckOutResult(addressee, phone, address, howToPay, useCard, mail) {
+      // console.log(addressee, phone, address, howToPay, useCard, mail)
+      // console.log(this.checkoutListIds)
+      let shoppingCartIdList = []
+      shoppingCartIdList.push(this.checkoutListIds)
+
+      let result = {
+        checkOutPersonInfoDto: {
+          receivedPersonName: addressee,
+        },
+        shoppingCartIdList: shoppingCartIdList
+      }
+      console.log(result)
+      // console.log(shoppingCartIdList)
+
     },
     checkToken() {
       // 在这里进行检查Token的逻辑
@@ -166,45 +175,5 @@ export default defineStore('cart', {
 
       return sum
     },
-    // sumCountCheckout(state) {
-
-    //   const initialValue = 0;
-    //   const sum = state.checkoutList.reduce(
-    //     (accumulator, currentValue) =>
-    //       accumulator + (currentValue.selectProductAmount * currentValue.productDto.price)
-    //       ,
-    //       initialValue
-    //     );
-
-    //   return sum
-    // },
-    // cartList: ({ cart }) => {
-    //   const { posts } = productStore()
-
-    //   const carts = cart.map((item) => {
-
-    //     const product = posts.find((product) => product.id === item.productId)
-
-    //     return {
-    //         ...item,
-    //       product,
-    //     }
-    //   })
-
-    //   // console.log(carts, 'carts')
-
-    //   const initialValue = 0;
-    //   const sum = carts.reduce(
-    //     (accumulator, currentValue) => accumulator + currentValue.total,
-    //     initialValue
-    //     );
-    //     console.log(sum, 'sum')
-
-
-    //   return {
-    //     carts,
-    //     sum,
-    //   }
-    // }
   },
 });

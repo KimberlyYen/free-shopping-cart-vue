@@ -37,7 +37,9 @@
 
                         :src="item.productDto.mainProductImgDisplayUrl" alt="productIMG">
                     </td>
-                    <td  class="col-3"> {{ item.productDto.productName }} <br/> <span class="productId-size">{{  item.productDto.id }}</span></td>
+                    <td  class="col-3"> {{ item.productDto.productName }} <br/> 
+                        <span class="productId-size">{{  item.productDto.id }}</span>
+                    </td>
                     
                     <td >
                         <div class="d-flex flex-row gap-2">
@@ -63,47 +65,54 @@
                     <div type="button" class="p-0">上一頁</div>
                 </router-link>
 
-                <router-link to="/success" class="btn btn-success rounded-5 col-2 mt-3">
+                <!-- <router-link to="/success" class="btn btn-success rounded-5 col-2 mt-3">
+                </router-link> -->
+                <div class="btn btn-success rounded-5 col-2 mt-3" @click="goToCheckOutResult(addressee,phone,address,howToPay,useCard,mail)">
                     確認結帳
-                </router-link>
+                </div>
             </div>
 
 
         </table>
 
-        <form class="container row g-3">
+    <form class="container row g-3">
         <div class="col-md-6">
             <label for="inputEmail4" class="form-label">收件人</label>
-            <input type="email" class="form-control" id="inputEmail4">
+            <input type="text" class="form-control" id="inputEmail4" v-model="addressee">
         </div>
+
         <div class="col-md-6">
             <label for="inputPassword4" class="form-label">連絡電話</label>
-            <input type="password" class="form-control" id="inputPassword4">
+            <input type="tel" class="form-control" id="inputPassword4" v-model="phone">
         </div>
+
         <div class="col-12">
             <label for="inputAddress" class="form-label">收件地址</label>
-            <input type="text" class="form-control" id="inputAddress" placeholder="1234 Main St">
+            <input type="text" class="form-control" id="inputAddress" placeholder="縣市/區域/路/號/樓層" v-model="address">
         </div>
-        <div class="col-md-6">
-            <label for="inputState" class="form-label">信用/金融卡</label>
-            <select id="inputState" class="form-select">
-            <option selected>Choose...</option>
-            <option>信用卡</option>
-            <option>金融卡</option>
-            </select>
-        </div>
+
         <div class="col-md-6">
             <label for="inputCity" class="form-label">付款方式</label>
-            <input type="text" class="form-control" id="inputCity">
+            <input type="text" placeholder="1=信用卡 2=貨到付款" class="form-control" id="inputCity" v-model="howToPay">
         </div>
+
+        <div class="col-md-6">
+            <label for="inputState" class="form-label">信用/金融卡</label>
+            <select id="inputState" class="form-select" v-model="useCard">
+                <option selected>Choose...</option>
+                <option>信用卡</option>
+                <option>金融卡</option>
+            </select>
+        </div>
+
         <div class="col-12">
             <label for="inputAddress2" class="form-label">郵件信箱</label>
-            <input type="text" class="form-control" id="inputAddress2" placeholder="Apartment, studio, or floor">
+            <input type="text" class="form-control" id="inputAddress2" placeholder="Sample@sample.com" 
+            v-model="mail">
         </div>
     </form>
 
                 
-
 
 
     </div>
@@ -115,9 +124,16 @@ import { mapActions, mapState } from 'pinia'
 import cartStore from '../stores/cartStore.js'
 
 
+
 export default {
     data() {
         return {
+            addressee: '',
+            phone: '',
+            address: '',
+            howToPay: '',
+            useCard: '',
+            mail:''
         }
     },
     created() {
@@ -125,16 +141,59 @@ export default {
     computed: {
         // 1. Store
         // 2. 要帶入的 state, Getter
-        ...mapState(cartStore, ['checkoutList', 'count','sumCount','isLoading']),
+        ...mapState(cartStore, ['checkoutList','sumCount','isLoading']),
     },
     methods: {
-        ...mapActions(cartStore, ['removeCartItem', 'addToCartAPI', 'getCartItem']),
+        ...mapActions(cartStore, [ 'goToCheckOutResult']),
+        // checkoutPageDetail(ids) {
+        //     console.log(ids)
+        //     // console.log(checkoutList)
+        //     // let checkOutPersonInfoDto = {
+        //     //     checkOutPersonInfoDto: {
+        //     //         receivedPersonName: this.addressee,
+        //     //         receivedPhone: this.phone,
+        //     //         receivedAddress: this.address,
+        //     //         // payType: this.howToPay,
+        //     //         // creditCardNumber: this.useCard,
+        //     //         receivedEmail:this.mail,
+        //     //     },
+        //     //     shoppingCartIdList:[]
+        //     // }
+
+        //     // const tokenNow = localStorage.getItem("shopCartToken");
+
+        //     // axios.post("https://tom-store-api.onrender.com/tom-store-api/orderSettlement", checkOutPersonInfoDto, {
+        //     //     headers: {
+        //     //     'Accept': 'application/json',
+        //     //     'Content-Type': 'application/json',
+        //     //     'authorization': "Bearer " + tokenNow
+        //     //     }
+        //     // })
+        //     // .then(response => {
+        //     //     // const data = response.data;
+        //     //     console.log(response);
+        //     //     // this.memberData = data.data
+        //     //     // // 在这里设置您的变量，如下所示
+        //     //     // this.birthday = data.data.birthday
+        //     //     // this.country = data.data.country
+        //     //     // this.displayName = data.data.displayName;
+        //     //     // this.gender = data.data.gender;
+        //     //     // this.memberTypes = data.data.memberTypes;
+        //     //     // this.note = data.data.note;
+        //     //     // this.account = data.data.email;
+        //     //     })
+        //     //     .catch(error => {
+        //     //     console.error("请求出错：", error);
+        //     //     alert(error.response.data.rm)
+        //     // });
+        // }
     }
 };
 
 </script>
 
 <style scoped>
+
 img{
     width: 100px;
     height: 100px;
@@ -157,5 +216,9 @@ img{
   background-color: rgb(223, 223, 223);
   margin-left: auto;
   display: flex;
+}
+
+form {
+    margin-bottom: 200px;
 }
 </style>
