@@ -11,7 +11,7 @@ export default defineStore('cart', {
       count: 100,
       isLoading: false,
       checkoutList: [],
-      checkoutListIds: [],
+      shoppingCartIdList: [],
       lastSelectedItem: {},
     };
   },
@@ -119,32 +119,63 @@ export default defineStore('cart', {
       })
         .then(response => response.json())
         .then(data => {
-
           this.cartList = data.data.shoppingCartDtoList
-          // console.log(this.cartList, 'dataCartList')
-          // location.reload()
+
+          // 購物車ID列表
+          data.data.shoppingCartDtoList.map((item) => {
+            this.shoppingCartIdList.push(item.id)
+          })
+
         }).finally(() => {
           this.isLoading = false; // 请求完成后，将isLoading设置为false，隐藏加载动画
         });
     },
     getProductToCheckout(item, ids) {
       this.checkoutList = item
-      this.checkoutListIds = ids
+      this.shoppingCartIdList = ids
     },
-    goToCheckOutResult(addressee, phone, address, howToPay, useCard, mail) {
+    goToCheckOutResult(addressee, phone, address, howToPay, useCard, mail, _this) {
+      console.log(useCard)
       // console.log(addressee, phone, address, howToPay, useCard, mail)
-      // console.log(this.checkoutListIds)
-      let shoppingCartIdList = []
-      shoppingCartIdList.push(this.checkoutListIds)
 
+      // 收件人資訊
       let result = {
         checkOutPersonInfoDto: {
+          payType: '2',
+          receivedAddress: address,
+          receivedEmail: mail,
           receivedPersonName: addressee,
+          receivedPhone: phone,
+          creditCardNumber: '2',
         },
-        shoppingCartIdList: shoppingCartIdList
+        //商品組合id
+        shoppingCartIdList: this.shoppingCartIdList
       }
-      console.log(result)
-      // console.log(shoppingCartIdList)
+      console.log(result, 'result')
+
+      const tokenNow = localStorage.getItem("shopCartToken");
+
+      axios.post("https://tom-store-api.onrender.com/tom-store-api/orderSettlement", result, {
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'authorization': "Bearer " + tokenNow
+        }
+      })
+        .then(response => {
+          // console.log(response);
+
+          // 成功 call API 之後
+          alert('確認結帳')
+          // 跳頁至成功頁面
+          _this.$router.push('./success')
+
+        })
+        .catch(error => {
+          console.error("请求出错：", error);
+          alert(error.response.data.rm)
+        });
+
 
     },
     checkToken() {

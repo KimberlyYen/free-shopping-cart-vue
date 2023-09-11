@@ -131,13 +131,13 @@ export default {
             // Checkbox 被选中
                 console.log('Checkbox被選中');  
 
-                // item 商品 push 組合陣列
+                // item 商品 push 組合陣列，
                 this.checked.push(item) 
-                // id 商品 push 組合陣列
-                this.checkedIds.push(item.productDto.id) 
+                // 需要結帳的，商品購物車 id 
+                this.checkedIds.push(item.id) 
+
                 // 組合陣列 和 組合商品id , 帶到結帳頁面
                 this.getProductToCheckout(this.checked, this.checkedIds)
-
             } else {
                 // Checkbox 被取消选中
                 console.log('Checkbox被取消选中');
@@ -145,7 +145,8 @@ export default {
                 // 已經存在於陣列中，不重複添加
                 // 刪除陣列中某個被指定下標的元素
                 this.checked.splice(item, 1)
-
+                // 需要結帳的，商品購物車 id 
+                this.checkedIds.splice(item.id, 1) 
             }
         },
         goToCheckoutPage() {

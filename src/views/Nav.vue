@@ -13,7 +13,10 @@
         <div>
           <div class="d-flex flex-row ">
 
-            <div class="col my-auto" v-if="displayName"> Hi ! 歡迎  <span class="text-primary">{{  displayName  }}</span>  </div>
+            <div class="col my-auto" v-if="displayName"> Hi ! 歡迎  <span class="text-primary">  {{  displayName  }}</span>  
+            
+            {{ memberTypes }}
+            </div>
             <div  class="col my-auto" v-else>  <span class="text-primary">您尚未登入 </span></div>
 
             <!-- 設定按鈕/下拉選單 -->

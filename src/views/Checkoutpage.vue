@@ -67,7 +67,7 @@
 
                 <!-- <router-link to="/success" class="btn btn-success rounded-5 col-2 mt-3">
                 </router-link> -->
-                <div class="btn btn-success rounded-5 col-2 mt-3" @click="goToCheckOutResult(addressee,phone,address,howToPay,useCard,mail)">
+                <div class="btn btn-success rounded-5 col-2 mt-3" @click="goToCheckOutResult(addressee,phone,address,howToPay,useCard,mail, this)">
                     確認結帳
                 </div>
             </div>
@@ -92,17 +92,18 @@
         </div>
 
         <div class="col-md-6">
-            <label for="inputCity" class="form-label">付款方式</label>
-            <input type="text" placeholder="1=信用卡 2=貨到付款" class="form-control" id="inputCity" v-model="howToPay">
+            <label for="inputUseCard" class="form-label">付款方式</label>
+            <!-- <input type="text" placeholder="1=信用卡 2=貨到付款" class="form-control" id="inputCity" v-model="howToPay"> -->
+            <select id="inputUseCard" class="form-select" v-model="howToPay" placeholder="Choose">
+                <option value="">--Please choose an option--</option>
+                <option value="1">信用卡</option>
+                <option value="2">貨到付款</option>
+            </select>
         </div>
 
         <div class="col-md-6">
-            <label for="inputState" class="form-label">信用/金融卡</label>
-            <select id="inputState" class="form-select" v-model="useCard">
-                <option selected>Choose...</option>
-                <option>信用卡</option>
-                <option>金融卡</option>
-            </select>
+            <label for="inputCardNumber" class="form-label">信用卡號</label>
+            <input type="text" class="form-control" id="inputCardNumber" placeholder="0000-0000-0000-0000" v-model="useCard">
         </div>
 
         <div class="col-12">

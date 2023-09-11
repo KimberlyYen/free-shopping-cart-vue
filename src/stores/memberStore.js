@@ -26,7 +26,6 @@ export default defineStore('memberStore', {
       // console.log(email)
       // console.log(password)
 
-
       // 在这里可以进行进一步的处理，例如登录验证
       const loginData = {
         email: email,
