@@ -7,7 +7,7 @@ import "bootstrap"
 import { createRouter, createWebHistory } from 'vue-router'
 import Home from './views/Home.vue'
 import ShoppingCart from './views/ShoppingCart.vue'
-import CheckoutPage from './views/CheckoutPage.vue'
+import CheckoutPage from './views/Checkoutpage.vue'
 import ProductDetail from './views/ProductDetail.vue'
 import Success from './views/Success.vue'
 import Login from './views/Login.vue'
