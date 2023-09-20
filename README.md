@@ -12,3 +12,6 @@ This template should help get you started developing with Vue 3 in Vite. The tem
 
 # 線上頁面
 https://tt920603.gitlab.io/free-shopping-cart/
+
+# Flow document
+https://app.diagrams.net/?title=free-shopping-cart-flow%20%E7%9A%84%E5%89%AF%E6%9C%AC.drawio&client=1
