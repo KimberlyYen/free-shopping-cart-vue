@@ -67,7 +67,7 @@
 
                 <!-- <router-link to="/success" class="btn btn-success rounded-5 col-2 mt-3">
                 </router-link> -->
-                <div class="btn btn-success rounded-5 col-2 mt-3" @click="goToCheckOutResult(addressee,phone,address,howToPay,useCard,mail, this)">
+                <div class="btn btn-success rounded-5 col-2 mt-3" @click="goToCheckOutResult(addressee,phone,address,howToPay,useCard,mail, this, this.tokenToComponent)">
                     確認結帳
                 </div>
             </div>
@@ -123,7 +123,7 @@
 <script>
 import { mapActions, mapState } from 'pinia'
 import cartStore from '../stores/cartStore.js'
-
+import memberStore from '../stores/memberStore.js'
 
 
 export default {
@@ -142,52 +142,11 @@ export default {
     computed: {
         // 1. Store
         // 2. 要帶入的 state, Getter
-        ...mapState(cartStore, ['checkoutList','sumCount','isLoading']),
+        ...mapState(cartStore, ['checkoutList', 'sumCount', 'isLoading']),
+        ...mapState(memberStore, ['tokenToComponent']),
     },
     methods: {
         ...mapActions(cartStore, [ 'goToCheckOutResult']),
-        // checkoutPageDetail(ids) {
-        //     console.log(ids)
-        //     // console.log(checkoutList)
-        //     // let checkOutPersonInfoDto = {
-        //     //     checkOutPersonInfoDto: {
-        //     //         receivedPersonName: this.addressee,
-        //     //         receivedPhone: this.phone,
-        //     //         receivedAddress: this.address,
-        //     //         // payType: this.howToPay,
-        //     //         // creditCardNumber: this.useCard,
-        //     //         receivedEmail:this.mail,
-        //     //     },
-        //     //     shoppingCartIdList:[]
-        //     // }
-
-        //     // const tokenNow = localStorage.getItem("shopCartToken");
-
-        //     // axios.post("https://tom-store-api.onrender.com/tom-store-api/orderSettlement", checkOutPersonInfoDto, {
-        //     //     headers: {
-        //     //     'Accept': 'application/json',
-        //     //     'Content-Type': 'application/json',
-        //     //     'authorization': "Bearer " + tokenNow
-        //     //     }
-        //     // })
-        //     // .then(response => {
-        //     //     // const data = response.data;
-        //     //     console.log(response);
-        //     //     // this.memberData = data.data
-        //     //     // // 在这里设置您的变量，如下所示
-        //     //     // this.birthday = data.data.birthday
-        //     //     // this.country = data.data.country
-        //     //     // this.displayName = data.data.displayName;
-        //     //     // this.gender = data.data.gender;
-        //     //     // this.memberTypes = data.data.memberTypes;
-        //     //     // this.note = data.data.note;
-        //     //     // this.account = data.data.email;
-        //     //     })
-        //     //     .catch(error => {
-        //     //     console.error("请求出错：", error);
-        //     //     alert(error.response.data.rm)
-        //     // });
-        // }
     }
 };
 

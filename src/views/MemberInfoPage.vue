@@ -2,6 +2,7 @@
     <div class="container ShoppingCart">
         <h2 class="text-primary">會員資料管理</h2>
 
+
     <form class="container row g-3" >
         <div class="col-12" >
             <label for="birthday" class="form-label">會員生日</label>
@@ -60,9 +61,6 @@ export default {
     },
     methods: {
         ...mapActions(memberStore, ['getMember', 'updateMember']),   
-        // showPassword() {
-        //     this.showPasswordType = this.showPasswordType === 'password' ? 'text' : 'password'
-        // }, 
     },
     watch: {
         birthday: {

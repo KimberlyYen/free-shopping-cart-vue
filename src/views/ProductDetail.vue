@@ -21,13 +21,15 @@
                     <div>加總 {{ total }} </div>
                 </div>
                 <div>
-                    <input type="number" min="0" class="m-2" @keyup.enter="sum" @click="sum($event)" v-model.number="howMany"> {{ productDetail.remainingAmountUnit }}
+                    <input type="number" min="1" class="m-2" @keyup.enter="sum" @click="sum($event)" v-model.number="howMany"> {{ productDetail.remainingAmountUnit }}
                     <br>
 
-                        <router-link to="/shoppingCart">
+                        <!-- <router-link to="/shoppingCart">
+                        </router-link> -->
+                        <div>
                             <a href="#" class="btn btn-primary" 
-                            @click="addToCart(productDetail.id,this.howMany),checkToken(productDetail.id,this.howMany)">加入購物車</a>
-                        </router-link>
+                            @click="addToCart(tokenToComponent,productDetail.id,this.howMany),checkToken(this)">加入購物車</a>
+                        </div>
 
                 </div>
             </div>
@@ -41,6 +43,7 @@
 <script>
 import { mapState, mapActions } from 'pinia'
 import cartStore from '../stores/cartStore'
+import memberStore from '../stores/memberStore'
 
 
 
@@ -50,7 +53,7 @@ export default {
         return {
             productDetail: {},
             hasToken: false,
-            howMany:0,
+            howMany:1,
             total: 0,
         }
     },
@@ -58,15 +61,17 @@ export default {
         this.getUrlId()
     },
     mounted() {
-        // this.checkToken()
     },
     computed: {
         // 1. Store
         // 2. 要帶入的 state, Getter
         ...mapState(cartStore, ['cart', 'totalProduct']),
+        ...mapState(memberStore,['tokenToComponent']),  
+        
     },
     methods: {
-        ...mapActions(cartStore,['addToCart', 'addToCartAPI','checkToken']),  
+        ...mapActions(cartStore, ['addToCart', 'addToCartAPI']),  
+        ...mapActions(memberStore,['checkToken']),  
         getUrlId() {
             let productId = this.$route.query.id
 

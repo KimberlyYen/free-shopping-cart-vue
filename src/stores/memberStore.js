@@ -18,6 +18,7 @@ export default defineStore('memberStore', {
       note: '',
 
     }
+
   ),
   actions: {
     // this
@@ -41,10 +42,13 @@ export default defineStore('memberStore', {
         .then(response => {
           const data = response.data;
           const token = data.data.access_token;
-          localStorage.setItem('shopCartToken', token);
-          // callback()
+          this.tokenToComponent = token
+          // localStorage.setItem('shopCartToken', token);
+          // console.log(this.tokenToComponent)
+
           alert('Success!');
-          this_.$router.push('./')
+          // this_.$router.push('./')
+          this_.$router.go(-1)
         })
         .catch(error => {
           console.error(error);
@@ -100,7 +104,9 @@ export default defineStore('memberStore', {
     },
     getMember() {
 
-      const tokenNow = localStorage.getItem("shopCartToken");
+      // console.log(this.tokenToComponent)
+
+      const tokenNow = this.tokenToComponent;
 
       axios.get("https://tom-store-api.onrender.com/tom-store-api/member", {
         headers: {
@@ -111,7 +117,8 @@ export default defineStore('memberStore', {
       })
         .then(response => {
           const data = response.data;
-          // console.log(data.data);
+          // console.log(data);
+
           this.memberData = data.data
           // 在这里设置您的变量，如下所示
           this.birthday = data.data.birthday
@@ -176,8 +183,28 @@ export default defineStore('memberStore', {
       this.username = '';
       this.password = '';
     },
+    checkToken(_this) {
+      // 在这里进行检查Token的逻辑
+      // const token = localStorage.getItem('shopCartToken');
+
+      const tokenNow = this.tokenToComponent;
+
+      if (tokenNow) {
+        // alert('已加入購物車')
+        this.hasToken = true;
+        _this.$router.push('./shoppingCart')
+        // console.log('YES')
+      } else {
+        alert('請先登入會員')
+        this.hasToken = false;
+        // console.log('NO')
+        // window.location.href = '/free-shopping-cart/login';
+        _this.$router.push('./login')
+      }
+    },
 
 
 
   },
+  persist: true,
 })

@@ -30,7 +30,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'pinia'
+import { mapActions } from 'pinia'
 import memberStore from '../stores/memberStore'
 
 

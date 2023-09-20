@@ -16,7 +16,7 @@ export default defineStore('cart', {
     };
   },
   actions: {
-    addToCart(productId, howMany) {
+    addToCart(tokenToComponent, productId, howMany) {
       // 取得已經有加入購物車的項目
       // 進行判斷，如果購物車有該項目則 +1，如果沒有則是新增一個購物車項目
       const currentCart = this.cartList.find((item) => item.productDto.id === productId)
@@ -25,49 +25,45 @@ export default defineStore('cart', {
         currentCart.selectProductAmount += howMany
         // currentCart.total += total
 
-        this.addToCartAPI(productId, currentCart.selectProductAmount)
+        this.addToCartAPI(tokenToComponent, productId, currentCart.selectProductAmount)
 
       } else {
         this.cart.push({
           id: new Date().getTime(),
           productId,
           howMany,
-          // total,
         })
 
-        this.addToCartAPI(productId, howMany)
+        this.addToCartAPI(tokenToComponent, productId, howMany)
       }
 
 
     },
-    addToCartAPI(productId, howMany) {
+    addToCartAPI(tokenToComponent, productId, howMany) {
 
-      const tokenNow = localStorage.getItem("shopCartToken");
+      // 在这里可以进行进一步的处理，例如创建账号
+      const addToCartAPIData = {
+        "selectProductAmount": howMany,
+        "productId": productId,
+      };
 
-      fetch("https://tom-store-api.onrender.com/tom-store-api/shoppingCart", {
-        method: "POST",
+
+      axios.post("https://tom-store-api.onrender.com/tom-store-api/shoppingCart", addToCartAPIData, {
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json',
           'Access-Control-Allow-Origin': '*',
-          'authorization': "Bearer" + " " + tokenNow
-        },
-        body: JSON.stringify({
-          "selectProductAmount": howMany,
-          "productId": productId,
-
-        }),
+          'authorization': "Bearer" + " " + tokenToComponent
+        }
       })
         .then(response => response.json())
-        .then(data => {
-          // console.log(data, 'data')
-          // location.reload()
-          this.getCartItem()
+        .then(this.getCartItem(tokenToComponent));
 
-        })
     },
-    removeCartItem(id) {
-      const tokenNow = localStorage.getItem("shopCartToken");
+    removeCartItem(id, tokenToComponent) {
+      // console.log(tokenToComponent)
+
+      // const tokenNow = localStorage.getItem("shopCartToken");
 
       // 確認是否刪除商品
       let deleteCheck
@@ -75,50 +71,56 @@ export default defineStore('cart', {
         deleteCheck = 0
       }
 
+      let removeData = {
+        updateShoppingCartDtoList: [
+          {
+            "productId": id,
+            "selectProductAmount": deleteCheck,
+          }
+        ]
+      }
 
-      // 確認刪除則，如果產品數量設成0，則將該產品會從該會員購物車移除  
-      fetch("https://tom-store-api.onrender.com/tom-store-api/shoppingCart", {
-        method: "PATCH",
+      axios.patch("https://tom-store-api.onrender.com/tom-store-api/shoppingCart", removeData, {
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json',
           'Access-Control-Allow-Origin': '*',
-          'authorization': "Bearer" + " " + tokenNow
+          'authorization': "Bearer" + " " + tokenToComponent
         },
-        body: JSON.stringify({
-          updateShoppingCartDtoList: [
-            {
-              "productId": id,
-              "selectProductAmount": deleteCheck,
-            }
-          ]
-        }),
       })
         .then(response => response.json())
-        .then(data => {
-          // console.log(data, 'data')
-        }).finally(() => {
+        .then(response => {
+          const data = response.data;
+          console.log(data);
+
+        })
+        .catch(error => {
+          console.error("请求出错：", error);
+          alert(error.response.data.rm)
+        })
+        .finally(() => {
           location.reload()
         });
 
     },
-    getCartItem() {
+    getCartItem(tokenToComponent) {
 
-      const tokenNow = localStorage.getItem("shopCartToken");
+      // const tokenNow = localStorage.getItem("shopCartToken");
 
       this.isLoading = true;
 
-      fetch("https://tom-store-api.onrender.com/tom-store-api/shoppingCart", {
-        method: "GET",
+      axios.get("https://tom-store-api.onrender.com/tom-store-api/shoppingCart", {
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json',
           'Access-Control-Allow-Origin': '*',
-          'authorization': "Bearer" + " " + tokenNow
-        },
+          'authorization': "Bearer" + " " + tokenToComponent
+        }
       })
-        .then(response => response.json())
-        .then(data => {
+        .then(response => {
+          const data = response.data;
+          // console.log(data);
+
           this.cartList = data.data.shoppingCartDtoList
 
           // 購物車ID列表
@@ -126,45 +128,52 @@ export default defineStore('cart', {
             this.shoppingCartIdList.push(item.id)
           })
 
-        }).finally(() => {
+        })
+        .catch(error => {
+          console.error("请求出错：", error);
+          // alert(error.response.data.rm)
+        })
+        .finally(() => {
           this.isLoading = false; // 请求完成后，将isLoading设置为false，隐藏加载动画
         });
+
     },
     getProductToCheckout(item, ids) {
       this.checkoutList = item
       this.shoppingCartIdList = ids
     },
-    goToCheckOutResult(addressee, phone, address, howToPay, useCard, mail, _this) {
-      console.log(useCard)
+    goToCheckOutResult(addressee, phone, address, howToPay, useCard, mail, _this, tokenToComponent) {
+      // console.log('tokenToComponent')
       // console.log(addressee, phone, address, howToPay, useCard, mail)
+
+      // 加載中顯示Loading動畫
+      this.isLoading = true;
 
       // 收件人資訊
       let result = {
         checkOutPersonInfoDto: {
-          payType: '2',
+          payType: howToPay,
           receivedAddress: address,
           receivedEmail: mail,
           receivedPersonName: addressee,
           receivedPhone: phone,
-          creditCardNumber: '2',
+          creditCardNumber: useCard,
         },
         //商品組合id
         shoppingCartIdList: this.shoppingCartIdList
       }
       console.log(result, 'result')
 
-      const tokenNow = localStorage.getItem("shopCartToken");
+      // const tokenNow = localStorage.getItem("shopCartToken");
 
       axios.post("https://tom-store-api.onrender.com/tom-store-api/orderSettlement", result, {
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json',
-          'authorization': "Bearer " + tokenNow
+          'authorization': "Bearer " + tokenToComponent
         }
       })
         .then(response => {
-          // console.log(response);
-
           // 成功 call API 之後
           alert('確認結帳')
           // 跳頁至成功頁面
@@ -174,23 +183,17 @@ export default defineStore('cart', {
         .catch(error => {
           console.error("请求出错：", error);
           alert(error.response.data.rm)
-        });
+
+          if (error.response.data.rm === "Token is Expired") {
+            _this.$router.push('./')
+          }
+
+        })
+        .finally(() => {
+          this.isLoading = false; // 请求完成后，将isLoading设置为false，隐藏加载动画
+        })
 
 
-    },
-    checkToken() {
-      // 在这里进行检查Token的逻辑
-      const token = localStorage.getItem('shopCartToken');
-      if (token) {
-        // alert('已加入購物車')
-        this.hasToken = true;
-        // console.log('YES')
-      } else {
-        alert('請先登入會員')
-        this.hasToken = false;
-        // console.log('NO')
-        window.location.href = '/free-shopping-cart/login';
-      }
     },
   },
   getters: {

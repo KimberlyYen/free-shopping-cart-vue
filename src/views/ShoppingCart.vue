@@ -59,7 +59,7 @@
                         <td> NT.{{ item.productDto.price *  item.selectProductAmount }}</td>
                         <td 
                         class="delete text-danger"
-                        @click="removeCartItem(item.productDto.id, item.selectProductAmount)"> X </td>
+                        @click="removeCartItem(item.productDto.id, this.tokenToComponent)"> X </td>
                     </tr>
 
                 </tbody>
@@ -84,6 +84,7 @@
 <script>
 import { mapActions, mapState } from 'pinia'
 import cartStore from '../stores/cartStore.js'
+import memberStore from '../stores/memberStore'
 
 
 export default {
@@ -95,17 +96,20 @@ export default {
         }
     },
     created() {
+        console.log(this.cartList)
         if (this.cartList) {
-            this.getCartItem()
+            this.getCartItem(this.tokenToComponent)
         }
     },
     computed: {
         // 1. Store
         // 2. 要帶入的 state, Getter
-        ...mapState(cartStore, ['cartList', 'count','sumCount','isLoading']),
+        ...mapState(cartStore, ['cartList', 'count', 'sumCount', 'isLoading']),
+        ...mapState(memberStore,['tokenToComponent']),  
+        
     },
     methods: {
-        ...mapActions(cartStore, ['removeCartItem', 'addToCartAPI', 'getCartItem','getProductToCheckout','checkToken']),
+        ...mapActions(cartStore, ['removeCartItem', 'addToCartAPI', 'getCartItem','getProductToCheckout']),
         addHowMany(item) {
             item.selectProductAmount += 1;
             this.addToCartAPI(item.productDto.id, item.selectProductAmount)

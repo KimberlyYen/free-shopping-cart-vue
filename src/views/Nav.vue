@@ -46,7 +46,7 @@
 
                 <!-- <li><a class="dropdown-item" href="#">會員資料管理</a></li> -->
                 <li>
-                  <router-link v-if="memberTypes === 'SELLER' || memberTypes === 'ADMIN' || memberTypes === 'SELLER,ADMIN' " to="/memberInfo" class="dropdown-item">
+                  <router-link v-if="memberTypes === 'SELLER' || memberTypes === 'ADMIN' || memberTypes === 'SELLER,ADMIN' || memberTypes === 'ADMIN,SELLER,CUSTOMER' " to="/memberInfo" class="dropdown-item">
                     <div type="submit">會員資料管理</div>
                   </router-link>
                 </li>
@@ -64,38 +64,46 @@
 
           </div>
 
-          <form class="d-flex flex-row align-items-center mt-2">
 
-            <input class="form-control w-100" type="text" aria-label="Search" 
-            v-model="inputFromChild"
-            >
-           
-            <el-select v-model="value" class="m-2 w-100" placeholder="商品類別" size="large"
-            >
-              <el-option value="請選擇" disabled/>
-              <el-option
-                v-for="item in options"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
-              />
-            </el-select>
 
-            <button 
-              class="btn btn-outline-success w-75 mx-2" 
-              type="submit" 
-              @click.prevent="sendToParent(this.inputFromChild, this.value)"
+          <div class="d-flex flex-row align-items-center w-full">
+
+            <form class="d-flex flex-row align-items-center mt-2">
+  
+              <input class="form-control w-100" type="text" aria-label="Search" 
+                v-model="inputFromChild"
               >
-              搜索
-            </button>
-
-            <div class="btn btn-info w-100 ">
+             
+              <el-select v-model="value" class="m-2 w-100" placeholder="商品類別" size="large"
+              >
+                <el-option value="請選擇" disabled/>
+                <el-option
+                  v-for="item in options"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                />
+              </el-select>
+  
+              <button 
+                class="btn btn-outline-success w-75 mx-2" 
+                type="submit" 
+                @click.prevent="sendToParent(this.inputFromChild, this.value)"
+                >
+                搜索
+              </button>
+  
+              
+            </form>
+  
+            <div class="btn btn-info w-25 mt-2">
               <router-link to="/shoppingCart" class="text-white">
                   我的購物車
               </router-link>
             </div>
 
-          </form>
+          </div>
+
   
         </div>
     </div>
@@ -141,15 +149,17 @@ export default {
   },
   mounted() { 
     this.getProductCategory()
+    // this.getMember()  
+    // const tokenNow = localStorage.getItem("shopCartToken");
 
-    const tokenNow = localStorage.getItem("shopCartToken");
+    const tokenNow = this.tokenToComponent
     if (tokenNow) {
       this.getMember()  
     }
   },  
   computed: {
     ...mapState(productStore, ['options']),
-    ...mapState(memberStore, ['displayName','memberTypes']),
+    ...mapState(memberStore, ['displayName','memberTypes','tokenToComponent']),
   },
   methods: {
     ...mapActions(productStore, ['sendToParent', 'getProductCategory']),  

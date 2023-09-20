@@ -1,5 +1,6 @@
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
+import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 import './style.css'
 import App from './App.vue'
 import "bootstrap/dist/css/bootstrap.min.css"
@@ -13,7 +14,6 @@ import Success from './views/Success.vue'
 import Login from './views/Login.vue'
 import MemberInfoPage from './views/MemberInfoPage.vue'
 import ProductManage from './views/ProductManage.vue'
-// import Vue from 'vue'
 
 
 
@@ -32,12 +32,12 @@ const router = createRouter({
 })
 
 const pinia = createPinia()
+pinia.use(piniaPluginPersistedstate)
 
 // 關閉瀏覽器的時候，清除localstorage怎麼做
 // window.addEventListener('unload', function() {
 //   localStorage.clear();
 // });
-
 
 
 createApp(App)

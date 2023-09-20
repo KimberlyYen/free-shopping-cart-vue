@@ -57,7 +57,7 @@
                         <td> NT.{{ item.productDto.price *  item.selectProductAmount }}</td>
                         <td 
                         class="delete text-danger"
-                        @click="removeCartItem(item.productDto.id, item.selectProductAmount)"> X </td>
+                        @click="removeCartItem(item.productDto.id)"> X </td>
                     </tr>
 
                 </tbody>
@@ -92,7 +92,6 @@ export default {
         if (this.cartList) {
             this.getCartItem()
         }
-        // this.checkToken()
     },
     computed: {
         // 1. Store
@@ -100,7 +99,7 @@ export default {
         ...mapState(cartStore, ['cartList', 'count','sumCount','isLoading']),
     },
     methods: {
-        ...mapActions(cartStore, ['removeCartItem', 'addToCartAPI', 'getCartItem','getProductToCheckout','checkToken']),
+        ...mapActions(cartStore, ['removeCartItem', 'addToCartAPI', 'getCartItem','getProductToCheckout']),
         addHowMany(item) {
             item.selectProductAmount += 1;
             this.addToCartAPI(item.productDto.id, item.selectProductAmount)
